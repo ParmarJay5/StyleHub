@@ -44,7 +44,7 @@ class _SellerDetailScreenState extends State<SellerDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seller Detail'),
+        title: const Text('Seller Detail'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -53,26 +53,26 @@ class _SellerDetailScreenState extends State<SellerDetailScreen> {
           children: [
             Text(
               'Store Name: $_storeName',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _storeAddressController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Store Address',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _contactNoController,
               keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Contact Number',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SizedBox(width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
@@ -80,7 +80,7 @@ class _SellerDetailScreenState extends State<SellerDetailScreen> {
                   _saveSellerDetails();
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
-                child: Text('Save',style: TextStyle(color: Colors.white),),
+                child: const Text('Save',style: TextStyle(color: Colors.white),),
               ),
             ),
           ],
@@ -99,12 +99,12 @@ class _SellerDetailScreenState extends State<SellerDetailScreen> {
         'contactNo': _contactNoController.text,
       });
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SellerProfileScreen()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SellerProfileScreen()));
 
     } catch (error) {
       print('Error saving seller details: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Failed to save seller details. Please try again.'),
           duration: Duration(seconds: 2),
         ),

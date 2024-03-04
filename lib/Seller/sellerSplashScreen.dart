@@ -20,32 +20,30 @@ class _SellerSplashScreenState extends State<SellerSplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3),_checkLoggedInSeller);
+    Timer(const Duration(seconds: 3), _checkLoggedInSeller);
     // Check if a seller is already logged in
   }
 
   Future<void> _checkLoggedInSeller() async {
-    // Get the current user
-    // User? user = _auth.currentUser;
-
     if (user != null) {
       // If a seller is already logged in, navigate to seller home screen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SellerProfileScreen()),
+        MaterialPageRoute(builder: (context) => const SellerProfileScreen()),
       );
     } else {
       // If no seller is logged in, navigate to seller signup screen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SellerSignup()),
+        MaterialPageRoute(builder: (context) => const SellerSignup()),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(), // You can customize this widget as per your UI design
+        child:
+            CircularProgressIndicator(), // You can customize this widget as per your UI design
       ),
     );
   }

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:StyleHub/homeScreens/HomePage.dart';
 import 'package:StyleHub/homeScreens/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +19,7 @@ class _UserSplashScreenState extends State<UserSplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3),_checkLoggedInUser);
+    Timer(const Duration(seconds: 3), _checkLoggedInUser);
     // Check if a user is already logged in
   }
 
@@ -37,16 +35,17 @@ class _UserSplashScreenState extends State<UserSplashScreen> {
     } else {
       // If no user is logged in, navigate to user login or signup screen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => UserLogin()),
+        MaterialPageRoute(builder: (context) => const UserLogin()),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(), // You can customize this widget as per your UI design
+        child:
+            CircularProgressIndicator(), // You can customize this widget as per your UI design
       ),
     );
   }

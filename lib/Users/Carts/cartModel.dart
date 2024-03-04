@@ -248,9 +248,6 @@
 //   }
 // }
 
-
-import 'package:flutter/material.dart';
-
 class cartModel {
   String id;
   String uid;
@@ -322,7 +319,7 @@ class cartModel {
       productTitle4: data['productTitle4'] ?? '',
       productTitleDetail4: data['productDetail4'] ?? '',
       allDetails: data['allProduct'] ?? '',
-      productDescription : data['productDescription']?? '',
+      productDescription: data['productDescription'] ?? '',
       quantity: data['quantity'] ?? '',
       totalPrice: data['totalPrice'],
       subtotal: data['subtotal'],
@@ -330,29 +327,27 @@ class cartModel {
     );
   }
 
-
   Map<String, dynamic> toJson() => {
-    "productName": productName,
-    "productColor": productColor,
-    "productPrice": productPrice,
-    "productTitle1": productTitle1,
-    "productTitle2": productTitle2,
-    "productTitle3": productTitle3,
-    "productTitle4": productTitle4,
-    "subCategory": subCategory,
-    "Category": category,
-    "productTitleDetail1": productTitleDetail1,
-    "productTitleDetail2": productTitleDetail2,
-    "productTitleDetail3": productTitleDetail3,
-    "productTitleDetail4": productTitleDetail4,
-    "productDescription": productDescription,
-    "image": image,
-    "uid": uid,
-    "ProductDiscount": discount,
-    "productNewPrice": productNewPrice,
-    'totalPrice': totalPrice,
-    'subtotal': subtotal,
-    'quantity': quantity,
-
-  };
+        "productName": productName,
+        "productColor": productColor,
+        "productPrice": productPrice,
+        "productTitle1": productTitle1,
+        "productTitle2": productTitle2,
+        "productTitle3": productTitle3,
+        "productTitle4": productTitle4,
+        "subCategory": subCategory,
+        "Category": category,
+        "productTitleDetail1": productTitleDetail1,
+        "productTitleDetail2": productTitleDetail2,
+        "productTitleDetail3": productTitleDetail3,
+        "productTitleDetail4": productTitleDetail4,
+        "productDescription": productDescription,
+        "image": image,
+        "uid": uid,
+        "ProductDiscount": discount,
+        "productNewPrice": productNewPrice,
+        'totalPrice': totalPrice,
+        'subtotal': subtotal,
+        'quantity': quantity,
+      };
 }

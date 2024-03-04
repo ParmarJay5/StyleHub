@@ -72,8 +72,6 @@
 //   }
 // }
 
-
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -99,13 +97,12 @@ class _PendingScreenState extends State<PendingScreen> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots()
         .listen((snapshot) {
-
       final status = snapshot.data()?['status'];
 
       if (status == 'approved') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SellerLogin()),
+          MaterialPageRoute(builder: (context) => const SellerLogin()),
         );
       }
     });
@@ -115,7 +112,7 @@ class _PendingScreenState extends State<PendingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

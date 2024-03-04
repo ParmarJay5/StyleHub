@@ -482,7 +482,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:StyleHub/Seller/Products/productModel.dart';
-import 'package:StyleHub/Users/Carts/cartScreen.dart';
 import '../Seller/Products/producrDetailScreen.dart';
 import '../category/categoryModel.dart';
 import '../page.dart';
@@ -575,8 +574,8 @@ class _homePageState extends State<homePage> {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
                     horizontal: 10, vertical: 10),
                 child: Text(
                   "User",
@@ -588,15 +587,15 @@ class _homePageState extends State<homePage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text(
+              leading: const Icon(Icons.dashboard),
+              title: const Text(
                 "Home",
                 style: TextStyle(
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
               onTap: () => Navigator.of(context).pop(false),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.add_box),
               title: Text(
                 "My Orders",
@@ -607,32 +606,32 @@ class _homePageState extends State<homePage> {
             ListTile(
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => FavoriteScreen()));
+                    MaterialPageRoute(builder: (context) => const FavoriteScreen()));
               },
-              leading: Icon(Icons.favorite),
-              title: Text(
+              leading: const Icon(Icons.favorite),
+              title: const Text(
                 "Favorite",
                 style: TextStyle(
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.logout),
+              leading: const Icon(Icons.logout),
               onTap: () {
                 FirebaseAuth.instance.signOut();
                 {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => UserLogin()),
+                      MaterialPageRoute(builder: (context) => const UserLogin()),
                           (route) => false);
                 }
               },
-              title: Text(
+              title: const Text(
                 "Logout",
                 style: TextStyle(
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.share),
               title: Text(
                 "share",
@@ -640,7 +639,7 @@ class _homePageState extends State<homePage> {
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.rate_review),
               title: Text(
                 "Rate Us",
@@ -691,7 +690,7 @@ class _homePageState extends State<homePage> {
                         return Center(
                           child: Text(
                             'Error: ${snapshot.error}',
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                         );
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -779,16 +778,16 @@ class _homePageState extends State<homePage> {
                       stream: FirebaseFirestore.instance.collection('Banners').snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Center(
                             child: Text(
                               'Error: ${snapshot.error}',
-                              style: TextStyle(color: Colors.red),
+                              style: const TextStyle(color: Colors.red),
                             ),
                           );
                         } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          return Center(
+                          return const Center(
                             child: Text(
                               'No banners found',
                               style: TextStyle(color: Colors.black),
@@ -805,7 +804,7 @@ class _homePageState extends State<homePage> {
                                   String imageUrl = banner['image'];
                                   return Container(
                                     width: MediaQuery.of(context).size.width,
-                                    margin: EdgeInsets.symmetric(horizontal: 6,),
+                                    margin: const EdgeInsets.symmetric(horizontal: 6,),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
                                       image: DecorationImage(
@@ -819,8 +818,8 @@ class _homePageState extends State<homePage> {
                                   height: 200.0,
                                   enableInfiniteScroll: true,
                                   autoPlay: true,
-                                  autoPlayInterval: Duration(seconds: 3),
-                                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                                  autoPlayInterval: const Duration(seconds: 3),
+                                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
                                   autoPlayCurve: Curves.fastOutSlowIn,
                                   enlargeCenterPage: true,
                                   scrollDirection: Axis.horizontal,
@@ -830,16 +829,16 @@ class _homePageState extends State<homePage> {
                                 future: fetchProducts(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return Center(child: CircularProgressIndicator());
+                                    return const Center(child: CircularProgressIndicator());
                                   } else if (snapshot.hasError) {
                                     return Center(
                                       child: Text(
                                         'Error: ${snapshot.error}',
-                                        style: TextStyle(color: Colors.red),
+                                        style: const TextStyle(color: Colors.red),
                                       ),
                                     );
                                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                    return Center(
+                                    return const Center(
                                       child: Text(
                                         'No products found',
                                         style: TextStyle(color: Colors.black),
@@ -852,7 +851,7 @@ class _homePageState extends State<homePage> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Products',
                                             style: TextStyle(
                                               fontSize: 20,
@@ -861,8 +860,8 @@ class _homePageState extends State<homePage> {
                                           ),
                                           GridView.builder(
                                             shrinkWrap: true,
-                                            physics: NeverScrollableScrollPhysics(),
-                                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                            physics: const NeverScrollableScrollPhysics(),
+                                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
                                               childAspectRatio: 0.7,
                                             ),
@@ -881,8 +880,8 @@ class _homePageState extends State<homePage> {
                                                   );
                                                 },
                                                 child: Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                                  padding: const EdgeInsets.all(16),
+                                                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                                                   decoration: BoxDecoration(
                                                     color: Colors.white,
                                                     borderRadius: BorderRadius.circular(12),
@@ -904,28 +903,28 @@ class _homePageState extends State<homePage> {
                                                         height: 100,
                                                         fit: BoxFit.cover,
                                                       ),
-                                                      SizedBox(height: 12),
+                                                      const SizedBox(height: 12),
                                                       Text(
                                                         product.productName,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.bold,
                                                         ),
                                                       ),
-                                                      SizedBox(height: 4),
+                                                      const SizedBox(height: 4),
                                                       Text(
                                                         '\₹ ${product.productPrice}',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 16,
                                                             fontWeight: FontWeight.bold,
                                                             color: Colors.grey,
                                                             decoration: TextDecoration.lineThrough
                                                         ),
                                                       ),
-                                                      SizedBox(height: 4),
+                                                      const SizedBox(height: 4),
                                                       Text(
                                                         '\₹ ${product.productNewPrice}',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.bold,
                                                           color: Colors.green,
@@ -959,7 +958,7 @@ class _homePageState extends State<homePage> {
   }
 
   Future<bool> _onBackPressed() async {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const page()));
     return true;
   }
 }

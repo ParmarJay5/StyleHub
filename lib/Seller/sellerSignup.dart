@@ -254,8 +254,6 @@
 //   }
 // }
 
-
-
 //
 // import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -456,7 +454,6 @@
 //     );
 //   }
 // }
-
 
 //
 // import 'package:StyleHub/Seller/pandingScreen.dart';
@@ -686,14 +683,9 @@
 //   }
 // }
 
-
-
-
-
 import 'package:StyleHub/Seller/pandingScreen.dart';
 import 'package:StyleHub/Seller/sellerLogin.dart';
 import 'package:StyleHub/page.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -711,7 +703,7 @@ class _SellerSignupState extends State<SellerSignup> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
 
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
@@ -723,7 +715,7 @@ class _SellerSignupState extends State<SellerSignup> {
       }
 
       final UserCredential userCredential =
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -740,8 +732,7 @@ class _SellerSignupState extends State<SellerSignup> {
       print('Signup successful. User UID: $uid');
 
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => PendingScreen()));
-
+          MaterialPageRoute(builder: (context) => const PendingScreen()));
     } catch (e) {
       print("Error occurred: $e");
     }
@@ -752,8 +743,9 @@ class _SellerSignupState extends State<SellerSignup> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(MaterialPageRoute(builder: (context) => page())),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context)
+              .pop(MaterialPageRoute(builder: (context) => const page())),
         ),
       ),
       body: SingleChildScrollView(
@@ -762,7 +754,7 @@ class _SellerSignupState extends State<SellerSignup> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(30),
                 child: Text(
                   "Signup To Your\nAccount",
@@ -773,7 +765,7 @@ class _SellerSignupState extends State<SellerSignup> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Form(
                 key: _formKey,
                 child: Column(
@@ -785,7 +777,7 @@ class _SellerSignupState extends State<SellerSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "Store Name",
-                        prefixIcon: Icon(Icons.store),
+                        prefixIcon: const Icon(Icons.store),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -794,7 +786,7 @@ class _SellerSignupState extends State<SellerSignup> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -802,7 +794,7 @@ class _SellerSignupState extends State<SellerSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "abc@gmail.com",
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: const Icon(Icons.email),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -811,7 +803,7 @@ class _SellerSignupState extends State<SellerSignup> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: !_passwordVisible,
@@ -820,7 +812,7 @@ class _SellerSignupState extends State<SellerSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "Password",
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -841,7 +833,7 @@ class _SellerSignupState extends State<SellerSignup> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: !_confirmPasswordVisible,
@@ -850,12 +842,12 @@ class _SellerSignupState extends State<SellerSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "Confirm Password",
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
                               _confirmPasswordVisible =
-                              !_confirmPasswordVisible;
+                                  !_confirmPasswordVisible;
                             });
                           },
                           icon: Icon(
@@ -878,7 +870,7 @@ class _SellerSignupState extends State<SellerSignup> {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
@@ -895,26 +887,27 @@ class _SellerSignupState extends State<SellerSignup> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Signup",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Already have an account?",
                     style: TextStyle(color: Colors.grey),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SellerLogin()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SellerLogin()));
                     },
-                    child: Text(
+                    child: const Text(
                       "Login",
                       style: TextStyle(color: Colors.black),
                     ),

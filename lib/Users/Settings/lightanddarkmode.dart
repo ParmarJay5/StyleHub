@@ -16,7 +16,6 @@ class _LDScreenState extends State<LDScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -34,8 +33,6 @@ class _LDScreenState extends State<LDScreen> {
           ),
         ],
       ),
-
-
     );
   }
 }

@@ -15,43 +15,16 @@ class SellerProfileScreen extends StatefulWidget {
 
 class _SellerProfileScreenState extends State<SellerProfileScreen> {
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Check if the seller's details are already stored
-  //   _checkSellerDetails();
-  // }
-  //
-  // Future<void> _checkSellerDetails() async {
-  //   try {
-  //     // Retrieve the current user's document from Firestore
-  //     final userDoc = await FirebaseFirestore.instance
-  //         .collection('Sellers')
-  //         .doc(FirebaseAuth.instance.currentUser!.uid)
-  //         .get();
-  //
-  //     // If the document exists and contains necessary details, navigate to profile screen
-  //     if (userDoc.exists && userDoc['storeAddress'] != null && userDoc['contactNo'] != null) {
-  //       Navigator.of(context).pushReplacement(
-  //         MaterialPageRoute(builder: (context) => SellerProfileScreen()),
-  //       );
-  //     }
-  //   } catch (error) {
-  //     print('Error checking seller details: $error');
-  //     // Handle error as needed
-  //   }
-  // }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      drawer: SellerDrawer(),
+      drawer: const SellerDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
+            const Center(
               child: Text(
                 "Welcome...",
                 style: TextStyle(
@@ -61,7 +34,7 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: Text(
                 "Your success is our priority.\nLet's thrive together!",
                 style: TextStyle(
@@ -71,10 +44,10 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             SellerDetails(),
-            SizedBox(height: 70),
-            Center(
+            const SizedBox(height: 70),
+            const Center(
               child: Text(
                 "StyleHub",
                 style: TextStyle(
@@ -84,7 +57,7 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: Text(
                 "stylehhub@gmail.com",
                 style: TextStyle(
@@ -94,7 +67,7 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: Text(
                 "(+91)9664802800",
                 style: TextStyle(
@@ -120,7 +93,7 @@ class SellerDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -132,35 +105,35 @@ class SellerDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('Profile'),
+            title: const Text('Profile'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => SellerProfileScreen()),
+                MaterialPageRoute(builder: (context) => const SellerProfileScreen()),
               );
             },
           ),
           ListTile(
-            title: Text('Products'),
+            title: const Text('Products'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ProductScreen()),
+                MaterialPageRoute(builder: (context) => const ProductScreen()),
               );
             },
           ),
           ListTile(
-            title: Text('Orders'),
+            title: const Text('Orders'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => SellerOrderScreen()),
+                MaterialPageRoute(builder: (context) => const SellerOrderScreen()),
               );
             },
           ),
           ListTile(
-            title: Text('Logout'),
+            title: const Text('Logout'),
             onTap: () {
               FirebaseAuth.instance.signOut();
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => page()),
+                MaterialPageRoute(builder: (context) => const page()),
               );
             },
           ),
@@ -177,45 +150,45 @@ class SellerDetails extends StatelessWidget {
       future: _fetchSellerData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || !snapshot.data!.exists) {
-          return Text('Seller document does not exist');
+          return const Text('Seller document does not exist');
         } else {
           final sellerSnapshot = snapshot.data!;
           return Card(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 80),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Seller Details :",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   Text(
                     'Store Name: ${sellerSnapshot['username']}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Email: ${sellerSnapshot['email']}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Store Address: ${sellerSnapshot['storeAddress']}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Contact Number: ${sellerSnapshot['contactNo']}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ],
               ),

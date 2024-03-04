@@ -1,14 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
-
 import '../../../image.dart';
 import '../../category/categoryModel.dart';
-
 
 class addProductScreen extends StatefulWidget {
   const addProductScreen({super.key});
@@ -23,7 +19,7 @@ class _addProductScreenState extends State<addProductScreen> {
   String? selectedSubCategory;
   String? selectedCategory;
 
-  String uniquefilename =DateTime.now().millisecondsSinceEpoch.toString();
+  String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
   List<File> selectedImage = [];
   bool isLoading = false;
 
@@ -43,18 +39,18 @@ class _addProductScreenState extends State<addProductScreen> {
   TextEditingController all_details = TextEditingController();
   TextEditingController product_Description = TextEditingController();
 
-
   // Generate a unique productId
   final productId = FirebaseFirestore.instance.collection("products").doc().id;
 
-  Future<bool> doesProductExist(String productName) async{
-    final querySnapshot = await FirebaseFirestore.instance.collection("products").where("product", isEqualTo: productName).get();
+  Future<bool> doesProductExist(String productName) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection("products")
+        .where("product", isEqualTo: productName)
+        .get();
     return querySnapshot.docs.isNotEmpty;
-
-
   }
 
-  Future<void> addProductsToFireStore() async{
+  Future<void> addProductsToFireStore() async {
     final category = selectedCategory;
     final subcategory = selectedSubCategory;
     final productName = product_name.text.trim();
@@ -73,52 +69,56 @@ class _addProductScreenState extends State<addProductScreen> {
     final allProduct = all_details.text.trim();
     final description = product_Description.text.trim();
 
-    if(category == null || category.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Category")),
+    if (category == null || category.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please Select Category")),
       );
       return;
     }
-    if(subcategory == null || subcategory.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select SubCategory")),
+    if (subcategory == null || subcategory.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please Select SubCategory")),
       );
       return;
     }
-    if(productName.isEmpty ||
-    productPrice.isEmpty ||
-    productDiscount.isEmpty ||
-    productNewPrice.isEmpty ||
-    color.isEmpty ||
-    productTitle1.isEmpty ||
-    productTitle2.isEmpty ||
-    productTitle3.isEmpty ||
-    productTitle4.isEmpty ||
-    productDetail1.isEmpty ||
-    productDetail2.isEmpty ||
-    productDetail3.isEmpty ||
-    productDetail4.isEmpty ||
-    allProduct.isEmpty ||
-    description.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Field")),);
+    if (productName.isEmpty ||
+        productPrice.isEmpty ||
+        productDiscount.isEmpty ||
+        productNewPrice.isEmpty ||
+        color.isEmpty ||
+        productTitle1.isEmpty ||
+        productTitle2.isEmpty ||
+        productTitle3.isEmpty ||
+        productTitle4.isEmpty ||
+        productDetail1.isEmpty ||
+        productDetail2.isEmpty ||
+        productDetail3.isEmpty ||
+        productDetail4.isEmpty ||
+        allProduct.isEmpty ||
+        description.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please Enter Field")),
+      );
       return;
     }
     final doesExsit = doesProductExist(productName);
 
-    if(await doesExsit){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Enter Product Name")),);
-    }
-    else{
+    if (await doesExsit) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please Enter Product Name")),
+      );
+    } else {
       setState(() {
         isLoading = true;
       });
       if (selectedImage.isNotEmpty) {
         Reference referenceRoot = FirebaseStorage.instance.ref();
         Reference referenceDirImages = referenceRoot.child('Product_Images');
-        Reference referenceImageToUpload = referenceDirImages.child(uniquefilename);
         try {
           final List<String> imageUrls = [];
           for (var i = 0; i < selectedImage.length; i++) {
             Reference referenceImageToUpload =
-            referenceDirImages.child('$uniquefilename-$i');
+                referenceDirImages.child('$uniquefilename-$i');
 
             await referenceImageToUpload.putFile(selectedImage[i]);
 
@@ -151,7 +151,7 @@ class _addProductScreenState extends State<addProductScreen> {
             'productNewPrice': productNewPrice,
             'allProduct': allProduct,
             'image': imageUrls,
-          }).then((value){
+          }).then((value) {
             selectedImage.clear();
             setState(() {
               isLoading = false;
@@ -175,81 +175,93 @@ class _addProductScreenState extends State<addProductScreen> {
             selectedCategory = null;
             selectedSubCategory = null;
 
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Product Added Successfully")),);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Product Added Successfully")),
+            );
           });
-        }
-        catch(error){
+        } catch (error) {
           print("Error Uploading Image $error");
-        };
-      }
-      else
-        {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Images")),);
-          setState(() {
-            isLoading = false;
-          });
         }
-
+        ;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please Select Images")),
+        );
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Products",style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text(
+          "Add Products",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Column(
             children: [
-
               SizedBox(
                 height: 180,
                 width: 300,
                 child: selectedImage.isNotEmpty
                     ? ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: selectedImage.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.file(
-                        selectedImage[index],
-                        width: 100,
-                        height: 100,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: selectedImage.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.file(
+                              selectedImage[index],
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      )
+                    : Image.asset(
+                        img,
+                        width: 300,
+                        height: 300,
                         fit: BoxFit.cover,
                       ),
-                    );
-                  },
-                )
-                    : Image.asset(img,
-                  width: 300,
-                  height: 300,
-                  fit: BoxFit.cover,
-                ),
               ),
-          // Image.asset(img,height: 200,width: 200,),
+              // Image.asset(img,height: 200,width: 200,),
 
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    ImagePicker imagePicker = ImagePicker();
-                    List<XFile>? files = await imagePicker.pickMultiImage();
-                    if (files == null) return;
+                    onPressed: () async {
+                      ImagePicker imagePicker = ImagePicker();
+                      List<XFile>? files = await imagePicker.pickMultiImage();
+                      if (files == null) return;
 
-                    selectedImage = files.map((file) => File(file.path)).toList();
-                    setState(() {});
-                  },style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                    child: Text("Select Image",style: TextStyle(color: Colors.white),)),
-                ),
+                      selectedImage =
+                          files.map((file) => File(file.path)).toList();
+                      setState(() {});
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.lightBlue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4))),
+                    child: const Text(
+                      "Select Image",
+                      style: TextStyle(color: Colors.white),
+                    )),
+              ),
 
-            SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
 //
 //               CategoryDropdownn(
 //                 selectedCategory: selectedCategory,
@@ -277,11 +289,12 @@ class _addProductScreenState extends State<addProductScreen> {
                 onChanged: (value) {
                   setState(() {
                     selectedCategory = value;
-                    selectedSubCategory = null; // Reset subcategory when category changes
+                    selectedSubCategory =
+                        null; // Reset subcategory when category changes
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               SubCategoryDropdown(
                 selectedCategory: selectedCategory,
                 selectedSubCategory: selectedSubCategory,
@@ -291,270 +304,270 @@ class _addProductScreenState extends State<addProductScreen> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            TextFormField(
-              controller: product_name,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green)
-              ),
-              hintText: "Product Name",
-
-
-            ),
-          ),
-          SizedBox(height: 20,),
               TextFormField(
-                controller: product_price,
-                keyboardType: TextInputType.numberWithOptions(),
+                controller: product_name,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
-                  hintText: "Product Price",
-
-
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
+                  hintText: "Product Name",
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: product_price,
+                keyboardType: const TextInputType.numberWithOptions(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: const BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
+                  hintText: "Product Price",
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: discount,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Discount",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_newprice,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product New Price",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_color,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Color",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_title1,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Title 1",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
-              TextFormField(controller: product_detail1,
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: product_detail1,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Detail",
-
-
                 ),
               ),
-              SizedBox(height: 20,),TextFormField(
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
                 controller: product_title2,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Title 2",
-
-
                 ),
               ),
-              SizedBox(height: 20,),TextFormField(
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
                 controller: product_detail2,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Detail",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_title3,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Title 3",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_detail3,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Detail",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_title4,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Title 4",
-
-
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: product_detail4,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "Product Detail",
-
-
                 ),
               ),
 
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
 
               TextFormField(
                 controller: product_Description,
                 // controller: productDescriptionController,
-                maxLines: 3, // Adjust the number of lines according to your design
+                maxLines:
+                    3, // Adjust the number of lines according to your design
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.green),
                   ),
                   hintText: "Product Description",
                 ),
               ),
 
-
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: all_details,
                 maxLines: 5,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green)
-                  ),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green)),
                   hintText: "All Detail",
-
-
                 ),
               ),
 
-          SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
 
-          Container(width: double.infinity,
-            child: ElevatedButton(onPressed: (){
-              addProductsToFireStore();
-            },style: ElevatedButton.styleFrom(backgroundColor: Colors.green,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                child:  isLoading
-                    ? CircularProgressIndicator(color: Colors.white,)
-                    :Text("Add Product",style: TextStyle(color: Colors.white),
-
-                )),
-          )],
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () {
+                      addProductsToFireStore();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4))),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            "Add Product",
+                            style: TextStyle(color: Colors.white),
+                          )),
+              )
+            ],
           ),
         ),
       ),
     );
   }
 }
-
 
 //
 // class CategoryDropdown extends StatelessWidget {
@@ -748,7 +761,7 @@ class CategoryDropdown extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection("Categories").snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
         final categoryDocs = snapshot.data!.docs;
         List<categoryModel> categories = [];
@@ -771,7 +784,7 @@ class CategoryDropdown extends StatelessWidget {
               value: categories.category,
               child: Text(
                 categories.category,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             );
           }).toList(),
@@ -786,6 +799,7 @@ class CategoryDropdown extends StatelessWidget {
     );
   }
 }
+
 //
 // class SubCategoryDropdown extends StatelessWidget {
 //   final String? selectedCategory;
@@ -883,7 +897,7 @@ class SubCategoryDropdown extends StatelessWidget {
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
-          return CircularProgressIndicator(); // Show loading indicator if data is not available yet
+          return const CircularProgressIndicator(); // Show loading indicator if data is not available yet
         }
 
         final subcategoryDocs = snapshot.data!.docs;
@@ -907,7 +921,7 @@ class SubCategoryDropdown extends StatelessWidget {
               value: subcategory,
               child: Text(
                 subcategory,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             );
           }).toList(),

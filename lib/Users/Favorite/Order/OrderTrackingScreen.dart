@@ -112,12 +112,10 @@
 //   }
 // }
 
-
 import 'package:StyleHub/Users/Favorite/Order/orderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:jiffy/jiffy.dart';
-
 
 class TrackOrder extends StatefulWidget {
   final orderModel? userOrder;
@@ -265,7 +263,7 @@ class _TrackOrderState extends State<TrackOrder> {
                             width: MediaQuery.of(context).size.width / 1.5,
                             child: ListTile(
                               contentPadding:
-                              const EdgeInsets.symmetric(vertical: 16.0),
+                                  const EdgeInsets.symmetric(vertical: 16.0),
                               title: Text(
                                 trackOrderList[index].title.toString(),
                                 style: const TextStyle(fontSize: 18.0),
@@ -285,8 +283,8 @@ class _TrackOrderState extends State<TrackOrder> {
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16.0),
-              padding: const EdgeInsets.only(
-                  left: 24.0, top: 16.0, bottom: 16.0),
+              padding:
+                  const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 border: Border.all(

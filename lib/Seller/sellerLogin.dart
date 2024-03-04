@@ -294,13 +294,11 @@
 //   }
 // }
 
-
 // testing code
+
 import 'package:StyleHub/Seller/Products/sellerDetails.dart';
-import 'package:StyleHub/Seller/sellerProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:StyleHub/homeScreens/HomePage.dart'; // Assuming this is your home screen
 
 class SellerLogin extends StatefulWidget {
   const SellerLogin({Key? key}) : super(key: key);
@@ -326,7 +324,9 @@ class _SellerLoginState extends State<SellerLogin> {
         // If the user is logged in, navigate to the home screen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SellerDetailScreen()), // Replace HomePage with your home screen
+          MaterialPageRoute(
+              builder: (context) =>
+                  const SellerDetailScreen()), // Replace HomePage with your home screen
         );
       }
     });
@@ -357,104 +357,107 @@ class _SellerLoginState extends State<SellerLogin> {
     return Scaffold(
       appBar: AppBar(),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(30),
-                child: Text(
-                  "Login To Your\nAccount",
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(height: 40),
-              Form(
-                key: _formKey,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    const Padding(
+                      padding: EdgeInsets.all(30),
+                      child: Text(
+                        "Login To Your\nAccount",
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
-                        hintText: "abc@gmail.com",
-                        prefixIcon: Icon(Icons.email),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        return null;
-                      },
                     ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: !_passwordVisible,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        hintText: "Password",
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: IconButton(
+                    const SizedBox(height: 40),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              hintText: "abc@gmail.com",
+                              prefixIcon: const Icon(Icons.email),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_passwordVisible,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              hintText: "Password",
+                              prefixIcon: const Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                                icon: Icon(
+                                  _passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
+                            if (_formKey.currentState!.validate()) {
+                              _login(); // Call the login function
+                            }
                           },
-                          icon: Icon(
-                            _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
-                        }
-                        return null;
-                      },
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _login(); // Call the login function
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      "Login",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

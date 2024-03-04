@@ -438,22 +438,12 @@
 //
 //
 
-
-
 import 'package:StyleHub/Seller/Products/addProductScreen.dart';
-import 'package:StyleHub/Seller/sellerProfileScreen.dart';
-// import 'package:StyleHub/Seller/Products/sellerDetails.dart';
-// import 'package:StyleHub/Seller/sellerLogin.dart';
-// import 'package:StyleHub/Seller/sellerOrderScreen.dart';
-// import 'package:StyleHub/Seller/sellerProfileScreen.dart';
-import 'package:StyleHub/page.dart';
-import 'package:StyleHub/subcategory/subCategoryModel.dart';
 import 'package:flutter/material.dart';
 import 'package:StyleHub/Seller/Products/productModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'editProductScreen.dart';
-
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -465,7 +455,6 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   late TextEditingController searchController;
   late String searchQuery;
-
 
   @override
   void initState() {
@@ -486,124 +475,86 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
-
-  // void _onTabTapped(int index) {
-  //   setState(() {
-  //     _currentIndex = index;
-  //   });
-  //   if (_currentIndex == 0) {
-  //     // Navigate to seller profile screen
-  //     // Navigator.push(
-  //     //   context,
-  //     //   // MaterialPageRoute(builder: (context) => SellerDetailScreen()),
-  //     // );
-  //   } else if (_currentIndex == 1) {
-  //     // Navigate to orders screen
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => sellerOrderScreen()),
-  //     );
-  //   }
-  // }
-
-  // Future<bool> _onWillPop() {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: Text('Are you sure?'),
-  //       content: Text('Do you want to exit the app?'),
-  //       actions: <Widget>[
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(false),
-  //           child: Text('No'),
-  //         ),
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => SellerProfileScreen())),
-  //           child: Text('Yes'),
-  //         ),
-  //       ],
-  //     ),
-  //   ).then((value) => value ?? false);
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return
-      // WillPopScope(
-      // onWillPop: _onWillPop,
-      // child:
-    Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Products",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Products",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => addProductScreen()));
-                  // Add product button logic
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const addProductScreen()));
+                // Add product button logic
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4)),
+              ),
+              child: const Text(
+                "Add Product",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: TextFormField(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                ),
-                child: Text("Add Product",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                height: 55,
-                child: TextFormField(
-                  controller: searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green),
-                    ),
-                    hintText: 'Search Product ...',
-                    prefixIcon: Icon(Icons.search),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                  hintText: 'Search Product ...',
+                  prefixIcon: Icon(Icons.search),
                 ),
               ),
-              SizedBox(height: 10),
-              Expanded(
-                child: ProductList(deleteProduct: _deleteProduct, searchQuery: searchQuery),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ProductList(
+                  deleteProduct: _deleteProduct, searchQuery: searchQuery),
+            ),
+          ],
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   currentIndex: _currentIndex,
-        //   onTap: _onTabTapped,
-        //   items: [
-        //     BottomNavigationBarItem(
-        //       backgroundColor: Colors.lightBlue,
-        //       icon: Icon(Icons.person),
-        //       label: 'Profile',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       backgroundColor: Colors.lightBlue,
-        //       icon: Icon(Icons.shopping_cart),
-        //       label: 'Orders',
-        //     ),
-        //   ],
-        // ),
+      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: _onTabTapped,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       backgroundColor: Colors.lightBlue,
+      //       icon: Icon(Icons.person),
+      //       label: 'Profile',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       backgroundColor: Colors.lightBlue,
+      //       icon: Icon(Icons.shopping_cart),
+      //       label: 'Orders',
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
@@ -612,7 +563,9 @@ class ProductList extends StatelessWidget {
   final Function(String) deleteProduct;
   final String searchQuery;
 
-  const ProductList({Key? key, required this.deleteProduct, required this.searchQuery}) : super(key: key);
+  const ProductList(
+      {Key? key, required this.deleteProduct, required this.searchQuery})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -620,7 +573,7 @@ class ProductList extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection("products").snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         final productDocs = snapshot.data!.docs;
         List<productModel> products = [];
@@ -630,11 +583,16 @@ class ProductList extends StatelessWidget {
           products.add(product);
         }
 
-        List<productModel> filteredProducts = products.where((product) => product.productName.toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
+        List<productModel> filteredProducts = products
+            .where((product) => product.productName
+                .toString()
+                .toLowerCase()
+                .contains(searchQuery.toLowerCase()))
+            .toList();
 
         return GridView.builder(
           shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.75,
             mainAxisSpacing: 20,
@@ -643,10 +601,10 @@ class ProductList extends StatelessWidget {
           itemCount: filteredProducts.length,
           itemBuilder: (context, index) {
             final productModel product = filteredProducts[index];
-            String imageUrl = product.image!.isNotEmpty ? product.image![0] : '';
+            String imageUrl =
+                product.image.isNotEmpty ? product.image[0] : '';
             return GestureDetector(
               onTap: () {
-                // Handle product tap
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -657,7 +615,7 @@ class ProductList extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -665,21 +623,23 @@ class ProductList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(15)),
                       child: product.image.isNotEmpty
                           ? Image.network(
-                        product.image[0],
-                        width: double.infinity,
-                        height: 160,
-                        // fit: BoxFit.cover,
-                      )
-                          : Icon(Icons.image),
+                              product.image[0],
+                              width: double.infinity,
+                              height: 160,
+                              // fit: BoxFit.cover,
+                            )
+                          : const Icon(Icons.image),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Text(
                         product.productName,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -688,35 +648,42 @@ class ProductList extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           color: Colors.blueAccent,
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProductScreen(product: product, imageUrls: imageUrl, image: product.image)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditProductScreen(
+                                        product: product,
+                                        imageUrls: imageUrl,
+                                        image: product.image)));
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           color: Colors.red,
                           onPressed: () {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text("Confirm Deletion"),
-                                  content: Text("Are you sure you want to delete this product?"),
+                                  title: const Text("Confirm Deletion"),
+                                  content: const Text(
+                                      "Are you sure you want to delete this product?"),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text("Cancel"),
+                                      child: const Text("Cancel"),
                                     ),
                                     TextButton(
                                       onPressed: () {
                                         deleteProduct(product.id);
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text("Yes"),
+                                      child: const Text("Yes"),
                                     ),
                                   ],
                                 );
@@ -736,7 +703,6 @@ class ProductList extends StatelessWidget {
     );
   }
 }
-
 
 //testing code
 // import 'package:StyleHub/Seller/Products/producrDetailScreen.dart';

@@ -7,7 +7,10 @@ import '../Seller/Products/productModel.dart';
 class ProductPage extends StatefulWidget {
   final subCategoryModel selectedSubCategory;
 
-  const ProductPage({Key? key, required this.selectedSubCategory, required List<productModel> products})
+  const ProductPage(
+      {Key? key,
+      required this.selectedSubCategory,
+      required List<productModel> products})
       : super(key: key);
 
   @override
@@ -16,7 +19,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   CollectionReference ProductRef =
-  FirebaseFirestore.instance.collection("products");
+      FirebaseFirestore.instance.collection("products");
 
   Future<List<productModel>> readProduct() async {
     try {
@@ -25,12 +28,12 @@ class _ProductPageState extends State<ProductPage> {
 
       // Convert QuerySnapshot to a list of ProductModel
       List<productModel> products =
-      response.docs.map((e) => productModel.fromSnapshot(e)).toList();
+          response.docs.map((e) => productModel.fromSnapshot(e)).toList();
 
       // Filter products based on the selected subcategory
       List<productModel> filteredProducts = products
           .where((element) =>
-      element.subCategory == widget.selectedSubCategory.subCategory)
+              element.subCategory == widget.selectedSubCategory.subCategory)
           .toList();
 
       return filteredProducts;
@@ -45,22 +48,6 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: [
-          // Padding(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          //   child: SizedBox(
-          //     width: 340,
-          //     child: TextFormField(
-          //       decoration: InputDecoration(
-          //         labelText: 'Search ...',
-          //         prefixIcon: const Icon(Icons.search),
-          //         border: OutlineInputBorder(
-          //           borderRadius: BorderRadius.circular(0),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -95,9 +82,13 @@ class _ProductPageState extends State<ProductPage> {
                     final product = products[index];
 
                     return InkWell(
-                      onTap: ()
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductDetailScreen(products: product,)));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductDetailScreen(
+                                      products: product,
+                                    )));
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -133,7 +124,8 @@ class _ProductPageState extends State<ProductPage> {
                             ),
                             const SizedBox(height: 5),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

@@ -3,16 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class editProfile extends StatefulWidget {
+  const editProfile({super.key});
+
   @override
   _editProfileState createState() => _editProfileState();
 }
 
 class _editProfileState extends State<editProfile> {
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _stateController = TextEditingController();
-  TextEditingController _zipCodeController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _zipCodeController = TextEditingController();
 
   late Future<Map<String, dynamic>> _userDataFuture;
 
@@ -27,8 +29,10 @@ class _editProfileState extends State<editProfile> {
     if (user == null) {
       throw Exception('User not logged in');
     }
-    final snapshot =
-    await FirebaseFirestore.instance.collection('Users').doc(user.uid).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user.uid)
+        .get();
     if (!snapshot.exists) {
       throw Exception('User data not found');
     }
@@ -43,7 +47,7 @@ class _editProfileState extends State<editProfile> {
 
     // Construct the address data
     Map<String, dynamic> addressData = {
-      'phone':_phoneController.text,
+      'phone': _phoneController.text,
       'address': _addressController.text,
       'city': _cityController.text,
       'state': _stateController.text,
@@ -57,7 +61,7 @@ class _editProfileState extends State<editProfile> {
         .update(addressData);
 
     // Show a success message
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text('Address updated successfully'),
     ));
   }
@@ -66,13 +70,13 @@ class _editProfileState extends State<editProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile & Payment'),
+        title: const Text('User Profile & Payment'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _userDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -89,58 +93,58 @@ class _editProfileState extends State<editProfile> {
 
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _phoneController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Phone No.',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _addressController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Address',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextFormField(
                       controller: _cityController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'City',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextFormField(
                       controller: _stateController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'State',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextFormField(
                       controller: _zipCodeController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Zip Code',
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () => _updateAddress(),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlue,
                       ),
-                      child: Text(
+                      child: const Text(
                         'Update',
                         style: TextStyle(color: Colors.white),
                       ),

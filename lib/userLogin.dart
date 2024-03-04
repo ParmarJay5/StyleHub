@@ -149,12 +149,10 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:StyleHub/homeScreens/homeScreen.dart';
 import 'package:StyleHub/userSignup.dart';
-
 import 'image.dart';
 
 class UserLogin extends StatefulWidget {
@@ -195,7 +193,7 @@ class _UserLoginState extends State<UserLogin> {
   Future<void> signInWithEmailAndPassword() async {
     try {
       final UserCredential userCredential =
-      await _auth.signInWithEmailAndPassword(
+          await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -221,8 +219,8 @@ class _UserLoginState extends State<UserLogin> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 80),
-            Padding(
+            const SizedBox(height: 80),
+            const Padding(
               padding: EdgeInsets.all(30),
               child: Text(
                 "Login To Your\nAccount",
@@ -232,12 +230,11 @@ class _UserLoginState extends State<UserLogin> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(child: Image.asset(login, width: 100, height: 100)),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -245,14 +242,13 @@ class _UserLoginState extends State<UserLogin> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   hintText: "abc@gmail.com",
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: const Icon(Icons.email),
                 ),
                 validator: _validateEmail,
               ),
             ),
             Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TextFormField(
                 controller: _passwordController,
                 obscureText: password,
@@ -261,7 +257,7 @@ class _UserLoginState extends State<UserLogin> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   hintText: "Password",
-                  prefixIcon: Icon(Icons.password),
+                  prefixIcon: const Icon(Icons.password),
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
@@ -269,8 +265,8 @@ class _UserLoginState extends State<UserLogin> {
                       });
                     },
                     icon: password
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
                   ),
                 ),
                 validator: _validatePassword,
@@ -281,11 +277,11 @@ class _UserLoginState extends State<UserLogin> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   errorMessage!,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -301,27 +297,27 @@ class _UserLoginState extends State<UserLogin> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Don't have an account?",
                   style: TextStyle(color: Colors.grey),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => UserSignup()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const UserSignup()));
                   },
-                  child: Text(
+                  child: const Text(
                     "Signup",
                     style: TextStyle(color: Colors.black),
                   ),

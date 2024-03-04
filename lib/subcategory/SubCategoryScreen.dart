@@ -502,7 +502,6 @@ import 'package:StyleHub/subcategory/subCategoryModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../Seller/Products/productModel.dart';
-import '../Seller/Products/productScreen.dart';
 import '../category/categoryModel.dart';
 
 class SubCategoryScreen extends StatefulWidget {
@@ -536,22 +535,6 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: SizedBox(
-          //     width: 340,
-          //     child: TextFormField(
-          //       onChanged: (value) {},
-          //       decoration: const InputDecoration(
-          //         labelText: "Search",
-          //         prefixIcon: Icon(Icons.search),
-          //         border: OutlineInputBorder(),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        ],
       ),
       body: FutureBuilder<List<subCategoryModel>>(
         future: readsubCategory().then((value) => value.where((element) => element.category == widget.selectedCategory.category).toList()),

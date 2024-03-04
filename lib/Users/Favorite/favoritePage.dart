@@ -215,11 +215,9 @@
 //
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../Seller/Products/producrDetailScreen.dart';
 import '../../Seller/Products/productModel.dart';
 
@@ -247,11 +245,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       }
 
       CollectionReference favoritesCollection =
-      FirebaseFirestore.instance.collection('favorites');
+          FirebaseFirestore.instance.collection('favorites');
 
-      QuerySnapshot querySnapshot = await favoritesCollection
-          .where('uid', isEqualTo: user.uid)
-          .get();
+      QuerySnapshot querySnapshot =
+          await favoritesCollection.where('uid', isEqualTo: user.uid).get();
 
       List<Map<String, dynamic>> fetchedFavoriteItems = [];
 
@@ -263,22 +260,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           'productName': doc['productName'],
           'productNewPrice': doc['productNewPrice'],
           'image': images,
-          'productPrice' : doc['productPrice'],
-          'allDetails' : doc['allDetails'],
-          'ProductDiscount' : doc['ProductDiscount'],
-          'productColor' : doc['productColor'],
-          'productDescription' : doc['productDescription'],
-          'productDetail1' : doc['productDetail1'],
-          'productDetail2' : doc['productDetail2'],
-          'productDetail3' : doc['productDetail3'],
-          'productDetail4' : doc['productDetail4'],
-          'productTitle1' : doc['productTitle1'],
-          'productTitle2' : doc['productTitle2'],
-          'productTitle3' : doc['productTitle3'],
-          'productTitle4' : doc['productTitle4'],
-
-
-
+          'productPrice': doc['productPrice'],
+          'allDetails': doc['allDetails'],
+          'ProductDiscount': doc['ProductDiscount'],
+          'productColor': doc['productColor'],
+          'productDescription': doc['productDescription'],
+          'productDetail1': doc['productDetail1'],
+          'productDetail2': doc['productDetail2'],
+          'productDetail3': doc['productDetail3'],
+          'productDetail4': doc['productDetail4'],
+          'productTitle1': doc['productTitle1'],
+          'productTitle2': doc['productTitle2'],
+          'productTitle3': doc['productTitle3'],
+          'productTitle4': doc['productTitle4'],
         });
       });
 
@@ -298,7 +292,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       }
 
       CollectionReference cartsCollection =
-      FirebaseFirestore.instance.collection('carts');
+          FirebaseFirestore.instance.collection('carts');
 
       // Add the item to the cart collection
       await cartsCollection.add({
@@ -324,7 +318,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       }
 
       CollectionReference favoritesCollection =
-      FirebaseFirestore.instance.collection('favorites');
+          FirebaseFirestore.instance.collection('favorites');
 
       // Remove the favorite item from Firestore
       await favoritesCollection.doc(favoriteItems[index]['docId']).delete();
@@ -341,7 +335,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorites'),
+        title: const Text('Favorites'),
       ),
       body: ListView.builder(
         itemCount: favoriteItems.length,
@@ -353,41 +347,36 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProductDetailScreen(
-                        products: productModel(
-                          id: item['productId'] ?? '',
-                          productName: item['productName'] ?? '',
-                          productPrice: item['productPrice'] ?? '',
-                          productColor: item['productColor'] ?? '',
-                          productDescription:
-                          item['productDescription'] ?? '',
-                          productTitle1: item['productTitle1'] ?? '',
-                          productTitleDetail1:
-                          item['productDetail1'] ?? '',
-                          productTitle2: item['productTitle2'] ?? '',
-                          productTitleDetail2:
-                          item['productDetail2'] ?? '',
-                          productTitle3: item['productTitle3'] ?? '',
-                          productTitleDetail3:
-                          item['productDetail3'] ?? '',
-                          productTitle4: item['productTitle4'] ?? '',
-                          productTitleDetail4:
-                          item['productDetail4'] ?? '',
-                          allDetails: item['allDetails'] ?? '',
-                          image: List<String>.from(item['image'] ?? []),
-                          discount: item['ProductDiscount'] ?? '',
-                          // quantity: item['quantity'] ?? '',
-                          total: item['total'] ?? '',
-                          productNewPrice:
-                          item['productNewPrice'] ?? '',
-                          category: item['category'] ?? '',
-                          subCategory: item['subCategory'] ?? '',
-                          quantity: item['quantity'],
-                          // subtotal: item['subtotal'],
-                        ),
-                      )));
+                            products: productModel(
+                              id: item['productId'] ?? '',
+                              productName: item['productName'] ?? '',
+                              productPrice: item['productPrice'] ?? '',
+                              productColor: item['productColor'] ?? '',
+                              productDescription:
+                                  item['productDescription'] ?? '',
+                              productTitle1: item['productTitle1'] ?? '',
+                              productTitleDetail1: item['productDetail1'] ?? '',
+                              productTitle2: item['productTitle2'] ?? '',
+                              productTitleDetail2: item['productDetail2'] ?? '',
+                              productTitle3: item['productTitle3'] ?? '',
+                              productTitleDetail3: item['productDetail3'] ?? '',
+                              productTitle4: item['productTitle4'] ?? '',
+                              productTitleDetail4: item['productDetail4'] ?? '',
+                              allDetails: item['allDetails'] ?? '',
+                              image: List<String>.from(item['image'] ?? []),
+                              discount: item['ProductDiscount'] ?? '',
+                              // quantity: item['quantity'] ?? '',
+                              total: item['total'] ?? '',
+                              productNewPrice: item['productNewPrice'] ?? '',
+                              category: item['category'] ?? '',
+                              subCategory: item['subCategory'] ?? '',
+                              quantity: item['quantity'],
+                              // subtotal: item['subtotal'],
+                            ),
+                          )));
             },
             child: Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
@@ -396,7 +385,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 3,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -421,26 +410,25 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         children: [
                           Text(
                             item['productName'] ?? '',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             ' \₹ ${item['productNewPrice'] ?? ''}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               color: Colors.green,
                             ),
                           ),
-
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.favorite,
                                   color: Colors.red,
                                 ),
@@ -453,7 +441,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   addToCart(index);
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 20,
                                     vertical: 10,
                                   ),
@@ -461,7 +449,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                     color: Colors.blue,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     'Add to Cart',
                                     style: TextStyle(
                                       color: Colors.white,

@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserProfile extends StatefulWidget {
+  const UserProfile({super.key});
+
   @override
   _UserProfileState createState() => _UserProfileState();
 }
@@ -22,7 +24,10 @@ class _UserProfileState extends State<UserProfile> {
     if (user == null) {
       throw Exception('User not logged in');
     }
-    final snapshot = await FirebaseFirestore.instance.collection('Users').doc(user.uid).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user.uid)
+        .get();
     if (!snapshot.exists) {
       throw Exception('User data not found');
     }
@@ -33,13 +38,13 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile'),
+        title: const Text('User Profile'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _userDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -57,24 +62,27 @@ class _UserProfileState extends State<UserProfile> {
             final state = userData['state'];
             final ZipCode = userData['zipCode'];
             return Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
                       radius: 80,
-                      backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                      backgroundImage: imageUrl != null
+                          ? NetworkImage(imageUrl)
+                          : const AssetImage('assets/default_profile_image.png')
+                              as ImageProvider,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
                       " $username",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "Phone No.: $phone",
                       style: TextStyle(
@@ -82,7 +90,7 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "Email: $email",
                       style: TextStyle(
@@ -90,7 +98,7 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "Address: $address",
                       style: TextStyle(
@@ -98,7 +106,7 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "City: $city",
                       style: TextStyle(
@@ -106,7 +114,7 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "State: $state",
                       style: TextStyle(
@@ -114,7 +122,7 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "ZipCode: $ZipCode",
                       style: TextStyle(
@@ -122,17 +130,20 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => editProfile()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const editProfile()));
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.lightBlue,
-                        padding: EdgeInsets.symmetric(horizontal: 80, vertical: 12),
-                        textStyle: TextStyle(fontSize: 20),
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 80, vertical: 12),
+                        textStyle: const TextStyle(fontSize: 20),
                       ),
-                      child: Text('Edit Profile', style: TextStyle(color: Colors.white)),
+                      child: const Text('Edit Profile',
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),

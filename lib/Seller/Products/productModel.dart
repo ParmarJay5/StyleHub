@@ -43,11 +43,9 @@ class productModel {
     required this.discount,
     required this.productNewPrice,
     required this.total,
-    // required this.subtotal,
     required this.category,
     required this.subCategory,
     required quantity,
-    // required this.quantity
   });
 
   // Add a factory method to convert Firestore snapshot to ProductModel
@@ -72,11 +70,9 @@ class productModel {
       discount: data['ProductDiscount'] ?? '',
       productNewPrice: data['productNewPrice'] ?? '',
       total: data['total'] ?? '',
-      // subtotal: data['subtotal'] ?? '',
       category: data['Category'] ?? '',
       subCategory: data['subCategory'] ?? '',
       quantity: data['quantity'] ?? '',
-
     );
   }
   Map<String, dynamic> toMap() {
@@ -88,21 +84,19 @@ class productModel {
       'productNewPrice': productNewPrice,
       'productDescription': productDescription,
       'ProductDiscount': discount,
-      'productTitle1' : productTitle1,
-      'productTitle2' : productTitle2,
-      'productTitle3' : productTitle3,
-      'productTitle4' : productTitle4,
-      'productDetail1' : productTitleDetail1,
-      'productDetail2' : productTitleDetail2,
-      'productDetail3' : productTitleDetail3,
-      'productDetail4' : productTitleDetail4,
-      'productColor' : productColor,
+      'productTitle1': productTitle1,
+      'productTitle2': productTitle2,
+      'productTitle3': productTitle3,
+      'productTitle4': productTitle4,
+      'productDetail1': productTitleDetail1,
+      'productDetail2': productTitleDetail2,
+      'productDetail3': productTitleDetail3,
+      'productDetail4': productTitleDetail4,
+      'productColor': productColor,
       'total': total,
-      // 'subtotal':subtotal,
-      // 'quantity': quantity,
-      'category' : category,
+      'category': category,
       'subCategory': subCategory,
-      'allProduct' : allDetails,
+      'allProduct': allDetails,
     };
   }
 }

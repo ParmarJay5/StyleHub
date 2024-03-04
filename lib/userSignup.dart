@@ -254,8 +254,6 @@
 //   }
 // }
 
-
-
 // main code
 // import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -512,10 +510,7 @@
 //   }
 // }
 
-
-
 // tesing code
-
 
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -565,7 +560,7 @@ class _UserSignupState extends State<UserSignup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Signup'),
+        title: const Text('User Signup'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -573,7 +568,7 @@ class _UserSignupState extends State<UserSignup> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(30),
                 child: Text(
                   "Signup To Your\nAccount",
@@ -584,12 +579,12 @@ class _UserSignupState extends State<UserSignup> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -602,18 +597,18 @@ class _UserSignupState extends State<UserSignup> {
                           ),
                           child: selectedImage != null
                               ? ClipOval(
-                            child: Image.file(
-                              selectedImage!,
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          )
+                                  child: Image.file(
+                                    selectedImage!,
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
                               : Icon(
-                            Icons.person,
-                            size: 80,
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
+                                  Icons.person,
+                                  size: 80,
+                                  color: Colors.grey.withOpacity(0.5),
+                                ),
                         ),
                         Positioned(
                           bottom: 0,
@@ -621,12 +616,12 @@ class _UserSignupState extends State<UserSignup> {
                           child: InkWell(
                             onTap: _pickImage,
                             child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(
                                 color: Colors.lightBlue,
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.camera_alt,
                                 color: Colors.white,
                               ),
@@ -635,8 +630,7 @@ class _UserSignupState extends State<UserSignup> {
                         ),
                       ],
                     ),
-
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _usernameController,
                       decoration: InputDecoration(
@@ -644,7 +638,7 @@ class _UserSignupState extends State<UserSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "Username",
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: const Icon(Icons.person),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -653,7 +647,7 @@ class _UserSignupState extends State<UserSignup> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -661,7 +655,7 @@ class _UserSignupState extends State<UserSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "abc@gmail.com",
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: const Icon(Icons.email),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -670,7 +664,7 @@ class _UserSignupState extends State<UserSignup> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _passController,
                       obscureText: !_passwordVisible,
@@ -679,7 +673,7 @@ class _UserSignupState extends State<UserSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "Password",
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -700,7 +694,7 @@ class _UserSignupState extends State<UserSignup> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _conPassController,
                       obscureText: !_confirmPasswordVisible,
@@ -709,12 +703,12 @@ class _UserSignupState extends State<UserSignup> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         hintText: "Confirm Password",
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
                               _confirmPasswordVisible =
-                              !_confirmPasswordVisible;
+                                  !_confirmPasswordVisible;
                             });
                           },
                           icon: Icon(
@@ -737,7 +731,7 @@ class _UserSignupState extends State<UserSignup> {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
@@ -746,72 +740,71 @@ class _UserSignupState extends State<UserSignup> {
                     onPressed: _isLoading
                         ? null
                         : () async {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          _isLoading = true;
-                        });
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                _isLoading = true;
+                              });
 
-                        try {
-                          final UserCredential userCredential =
-                          await _auth
-                              .createUserWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passController.text,
-                          );
+                              try {
+                                final UserCredential userCredential =
+                                    await _auth.createUserWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passController.text,
+                                );
 
-                          final String uid =
-                              userCredential.user!.uid; // Get UID
+                                final String uid =
+                                    userCredential.user!.uid; // Get UID
 
-                          if (selectedImage != null) {
-                            Reference referenceRoot =
-                            FirebaseStorage.instance.ref();
-                            Reference referenceDirImage =
-                            referenceRoot.child("Users_Image");
-                            Reference referenceImageUpload =
-                            referenceDirImage.child(uniquefilename);
+                                if (selectedImage != null) {
+                                  Reference referenceRoot =
+                                      FirebaseStorage.instance.ref();
+                                  Reference referenceDirImage =
+                                      referenceRoot.child("Users_Image");
+                                  Reference referenceImageUpload =
+                                      referenceDirImage.child(uniquefilename);
 
-                            await referenceImageUpload
-                                .putFile(selectedImage!);
-                            imageUrl = await referenceImageUpload
-                                .getDownloadURL();
-                            print("Image Url $imageUrl");
+                                  await referenceImageUpload
+                                      .putFile(selectedImage!);
+                                  imageUrl = await referenceImageUpload
+                                      .getDownloadURL();
+                                  print("Image Url $imageUrl");
 
-                            // Store user data with UID
-                            await _firestore
-                                .collection('Users')
-                                .doc(uid)
-                                .set({
-                              'uid': uid,
-                              'username': _usernameController.text,
-                              'email': _emailController.text,
-                              'profile_image': imageUrl,
-                              // You can add more fields as needed
-                            });
+                                  // Store user data with UID
+                                  await _firestore
+                                      .collection('Users')
+                                      .doc(uid)
+                                      .set({
+                                    'uid': uid,
+                                    'username': _usernameController.text,
+                                    'email': _emailController.text,
+                                    'profile_image': imageUrl,
+                                    // You can add more fields as needed
+                                  });
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UserLogin(),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(
-                                content: Text(
-                                    "Please select an Image")));
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          }
-                        } catch (e) {
-                          print('Error occurred: $e');
-                        }
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const UserLogin(),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text("Please select an Image")));
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
+                              } catch (e) {
+                                print('Error occurred: $e');
+                              }
 
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      }
-                    },
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightBlue,
                       shape: RoundedRectangleBorder(
@@ -819,17 +812,17 @@ class _UserSignupState extends State<UserSignup> {
                       ),
                     ),
                     child: _isLoading
-                        ? CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                        : Text(
-                      "Signup",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            "Signup",
+                            style: TextStyle(color: Colors.white),
+                          ),
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         ),

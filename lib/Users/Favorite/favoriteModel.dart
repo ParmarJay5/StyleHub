@@ -61,11 +61,9 @@
 //   };
 // }
 
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FavModel{
+class FavModel {
   final String id; // Add the id field
   final List<String>? images; //
   final String? category;
@@ -86,7 +84,6 @@ class FavModel{
   final String discount;
   final String productNewPrice;
 
-
   FavModel({
     required this.id,
     required this.category,
@@ -99,7 +96,7 @@ class FavModel{
     required this.productTitleDetail1,
     required this.productTitle2,
     required this.productTitleDetail2,
-    required this .productTitle3,
+    required this.productTitle3,
     required this.productTitleDetail3,
     required this.productTitle4,
     required this.productTitleDetail4,
@@ -134,24 +131,23 @@ class FavModel{
   }
 
   Map<String, dynamic> toJson() => {
-    "productName": productName,
-    "productColor": productColor,
-    "productPrice": productPrice,
-    "productTitle1": productTitle1,
-    "productTitle2": productTitle2,
-    "productTitle3": productTitle3,
-    "productTitle4": productTitle4,
-    "subCategory": subCategory,
-    "Category": category,
-    "productTitleDetail1": productTitleDetail1,
-    "productTitleDetail2": productTitleDetail2,
-    "productTitleDetail3": productTitleDetail3,
-    "productTitleDetail4": productTitleDetail4,
-    "productDescription": productDescription,
-    "image": images,
-    "uid": UserID,
-    "ProductDiscount": discount,
-    "productNewPrice": productNewPrice,
-
-  };
+        "productName": productName,
+        "productColor": productColor,
+        "productPrice": productPrice,
+        "productTitle1": productTitle1,
+        "productTitle2": productTitle2,
+        "productTitle3": productTitle3,
+        "productTitle4": productTitle4,
+        "subCategory": subCategory,
+        "Category": category,
+        "productTitleDetail1": productTitleDetail1,
+        "productTitleDetail2": productTitleDetail2,
+        "productTitleDetail3": productTitleDetail3,
+        "productTitleDetail4": productTitleDetail4,
+        "productDescription": productDescription,
+        "image": images,
+        "uid": UserID,
+        "ProductDiscount": discount,
+        "productNewPrice": productNewPrice,
+      };
 }

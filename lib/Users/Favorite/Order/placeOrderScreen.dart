@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:StyleHub/Users/Favorite/Order/orderModel.dart'; // Import your order model if needed
 
-
 import '../../OrderTracking seller/OrderTrackingScreen.dart';
 import 'OrderTrackingScreen.dart';
 
@@ -24,25 +23,26 @@ class _OrderListScreenState extends State<OrderListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Orders'),
+        title: const Text('All Orders'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _ordersStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data == null) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("No orders available."),
             );
           }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              var orderData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              var orderData =
+                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
               return Card(
                 child: ListTile(
                   title: Text("Order ID: ${snapshot.data!.docs[index].id}"),
@@ -57,7 +57,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                     ],
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.track_changes),
+                    icon: const Icon(Icons.track_changes),
                     onPressed: () {
                       // Navigator.push(
                       //   context,
