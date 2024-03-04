@@ -107,7 +107,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:StyleHub/Seller/Products/producrDetailScreen.dart';
 import 'package:StyleHub/Seller/Products/productModel.dart';
 import 'package:StyleHub/Users/buyNow.dart';
-import '../../homeScreens/homeScreen.dart'; // Import the BottomNavigationHome screen
+import '../../homeScreens/homeScreen.dart';
+import '../buy now.dart'; // Import the BottomNavigationHome screen
 
 class CartPage extends StatefulWidget {
   @override
