@@ -316,40 +316,103 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     super.initState();
   }
 
-  void addToCart() {
-    FirebaseFirestore.instance.collection('carts').add({
-      'User ID': FirebaseAuth.instance.currentUser!.uid,
-      'uid': widget.products.id,
-      'productName': widget.products.productName,
-      'productNewPrice': widget.products.productNewPrice,
-      'quantity': selectedQuantity,
-      'totalPrice': widget.products.total,
-      'productPrice': widget.products.productPrice,
-      'ProductDiscount':widget.products.discount,
-      'productColor': widget.products.productColor,
-      'productDescription':widget.products.productDescription,
-      'productDetail1': widget.products.productTitleDetail1,
-      'productDetail2': widget.products.productTitleDetail2,
-      'productDetail3': widget.products.productTitleDetail3,
-      'productDetail4': widget.products.productTitleDetail4,
-      'productTitle1': widget.products.productTitle1,
-      'productTitle2': widget.products.productTitle2,
-      'productTitle3': widget.products.productTitle3,
-      'productTitle4': widget.products.productTitle4,
-      'allDetails': widget.products.allDetails,
+  // void addToCart() {
+  //   FirebaseFirestore.instance.collection('carts').add({
+  //     'User ID': FirebaseAuth.instance.currentUser!.uid,
+  //     'uid': widget.products.id,
+  //     'productName': widget.products.productName,
+  //     'productNewPrice': widget.products.productNewPrice,
+  //     'quantity': selectedQuantity,
+  //     'totalPrice': widget.products.total,
+  //     'productPrice': widget.products.productPrice,
+  //     'ProductDiscount':widget.products.discount,
+  //     'productColor': widget.products.productColor,
+  //     'productDescription':widget.products.productDescription,
+  //     'productDetail1': widget.products.productTitleDetail1,
+  //     'productDetail2': widget.products.productTitleDetail2,
+  //     'productDetail3': widget.products.productTitleDetail3,
+  //     'productDetail4': widget.products.productTitleDetail4,
+  //     'productTitle1': widget.products.productTitle1,
+  //     'productTitle2': widget.products.productTitle2,
+  //     'productTitle3': widget.products.productTitle3,
+  //     'productTitle4': widget.products.productTitle4,
+  //     'allDetails': widget.products.allDetails,
+  //
+  //     // Add other product details as needed
+  //   }).then((value) {
+  //     // Handle success
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Successfully added to cart')),
+  //     );
+  //   }).catchError((error) {
+  //     // Handle errors
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Failed to add to cart')),
+  //     );
+  //   });
+  // }
 
-      // Add other product details as needed
-    }).then((value) {
-      // Handle success
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Successfully added to cart')),
-      );
-    }).catchError((error) {
-      // Handle errors
+  void addToCart() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return;
+      }
+
+      CollectionReference cartsCollection =
+      FirebaseFirestore.instance.collection('carts');
+
+      // Check if the product already exists in the cart
+      QuerySnapshot querySnapshot = await cartsCollection
+          .where('uid', isEqualTo: widget.products.id)
+          .where('User ID', isEqualTo: user.uid)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Product already exists, update the quantity
+        DocumentSnapshot cartItem = querySnapshot.docs.first;
+        int currentQuantity = cartItem['quantity'];
+        int newQuantity = currentQuantity + selectedQuantity;
+
+        await cartItem.reference.update({'quantity': newQuantity});
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Quantity updated in cart')),
+        );
+      } else {
+        // Product does not exist, add it to the cart
+        await cartsCollection.add({
+          'User ID': user.uid,
+          'uid': widget.products.id,
+          'productName': widget.products.productName,
+          'productNewPrice': widget.products.productNewPrice,
+          'quantity': selectedQuantity,
+          'totalPrice': widget.products.total,
+          'productPrice': widget.products.productPrice,
+          'ProductDiscount': widget.products.discount,
+          'productColor': widget.products.productColor,
+          'productDescription': widget.products.productDescription,
+          'productDetail1': widget.products.productTitleDetail1,
+          'productDetail2': widget.products.productTitleDetail2,
+          'productDetail3': widget.products.productTitleDetail3,
+          'productDetail4': widget.products.productTitleDetail4,
+          'productTitle1': widget.products.productTitle1,
+          'productTitle2': widget.products.productTitle2,
+          'productTitle3': widget.products.productTitle3,
+          'productTitle4': widget.products.productTitle4,
+          'allDetails': widget.products.allDetails,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Successfully added to cart')),
+        );
+      }
+    } catch (e) {
+      print('Error adding to cart: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to add to cart')),
       );
-    });
+    }
   }
 
 
@@ -664,7 +727,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               'productName': widget.products.productName,
                               'productNewPrice': widget.products.productNewPrice,
                               'quantity': selectedQuantity,
-                              'subtotal': widget.products.subtotal,
+                              // 'subtotal': widget.products.subtotal,
                               'totalPrice': widget.products.total,
                               // Add other product details as needed
                             }).then((value) {

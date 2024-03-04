@@ -19,7 +19,7 @@ class productModel {
   List<String> image;
   String productNewPrice;
   String total;
-  String subtotal;
+  // String subtotal;
   // String quantity;
   String? category;
   String subCategory;
@@ -43,7 +43,7 @@ class productModel {
     required this.discount,
     required this.productNewPrice,
     required this.total,
-    required this.subtotal,
+    // required this.subtotal,
     required this.category,
     required this.subCategory,
     required quantity,
@@ -72,7 +72,7 @@ class productModel {
       discount: data['ProductDiscount'] ?? '',
       productNewPrice: data['productNewPrice'] ?? '',
       total: data['total'] ?? '',
-      subtotal: data['subtotal'] ?? '',
+      // subtotal: data['subtotal'] ?? '',
       category: data['Category'] ?? '',
       subCategory: data['subCategory'] ?? '',
       quantity: data['quantity'] ?? '',
@@ -98,7 +98,7 @@ class productModel {
       'productDetail4' : productTitleDetail4,
       'productColor' : productColor,
       'total': total,
-      'subtotal':subtotal,
+      // 'subtotal':subtotal,
       // 'quantity': quantity,
       'category' : category,
       'subCategory': subCategory,

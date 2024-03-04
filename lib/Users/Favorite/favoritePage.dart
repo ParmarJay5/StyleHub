@@ -382,7 +382,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           category: item['category'] ?? '',
                           subCategory: item['subCategory'] ?? '',
                           quantity: item['quantity'],
-                          subtotal: item['subtotal'],
+                          // subtotal: item['subtotal'],
                         ),
                       )));
             },

@@ -124,6 +124,59 @@ class _CartPageState extends State<CartPage> {
     fetchCartData();
   }
 
+  // Future<void> fetchCartData() async {
+  //   try {
+  //     User? user = FirebaseAuth.instance.currentUser;
+  //     if (user == null) {
+  //       return;
+  //     }
+  //
+  //     CollectionReference cartsCollection =
+  //     FirebaseFirestore.instance.collection('carts');
+  //
+  //     QuerySnapshot querySnapshot = await cartsCollection
+  //         .where('uid', isEqualTo: user.uid)
+  //         .get();
+  //
+  //     List<Map<String, dynamic>> fetchedCartItems = [];
+  //
+  //     querySnapshot.docs.forEach((doc) {
+  //       List<String> images =
+  //       List<String>.from(doc['image'] ?? []);
+  //
+  //       fetchedCartItems.add({
+  //         'docId': doc.id, // Store the document ID
+  //         'productName': doc['productName'] ?? '',
+  //         'productNewPrice': doc['productNewPrice'] ?? '',
+  //         'quantity': doc['quantity'] ?? '',
+  //         'image': images,
+  //         // 'productPrice' : doc['productPrice'] ?? '',
+  //         // 'allDetails' : doc['allDetails']?? '',
+  //         // 'ProductDiscount' : doc['ProductDiscount'] ?? '',
+  //         // 'productColor' : doc['productColor'] ?? '',
+  //         // 'productDescription' : doc['productDescription'] ?? '',
+  //         // 'productDetail1' : doc['productDetail1'] ?? '',
+  //         // 'productDetail2' : doc['productDetail2'] ?? '',
+  //         // 'productDetail3' : doc['productDetail3'] ?? '',
+  //         // 'productDetail4' : doc['productDetail4'] ?? '',
+  //         // 'productTitle1' : doc['productTitle1'] ?? '',
+  //         // 'productTitle2' : doc['productTitle2'] ?? '',
+  //         // 'productTitle3' : doc['productTitle3'] ?? '',
+  //         // 'productTitle4' : doc['productTitle4'] ?? '',
+  //       });
+  //     });
+  //
+  //     setState(() {
+  //       cartItems = fetchedCartItems;
+  //       totalPrice = calculateTotalPrice(cartItems);
+  //     });
+  //   } catch (e) {
+  //     print('Error fetching cart data: $e');
+  //   }
+  // }
+
+
+
   Future<void> fetchCartData() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -141,8 +194,7 @@ class _CartPageState extends State<CartPage> {
       List<Map<String, dynamic>> fetchedCartItems = [];
 
       querySnapshot.docs.forEach((doc) {
-        List<String> images =
-        List<String>.from(doc['image'] ?? []);
+        List<String> images = List<String>.from(doc['image'] ?? []);
 
         fetchedCartItems.add({
           'docId': doc.id, // Store the document ID
@@ -150,19 +202,19 @@ class _CartPageState extends State<CartPage> {
           'productNewPrice': doc['productNewPrice'] ?? '',
           'quantity': doc['quantity'] ?? '',
           'image': images,
-          // 'productPrice' : doc['productPrice'] ?? '',
-          // 'allDetails' : doc['allDetails']?? '',
-          // 'ProductDiscount' : doc['ProductDiscount'] ?? '',
-          // 'productColor' : doc['productColor'] ?? '',
-          // 'productDescription' : doc['productDescription'] ?? '',
-          // 'productDetail1' : doc['productDetail1'] ?? '',
-          // 'productDetail2' : doc['productDetail2'] ?? '',
-          // 'productDetail3' : doc['productDetail3'] ?? '',
-          // 'productDetail4' : doc['productDetail4'] ?? '',
-          // 'productTitle1' : doc['productTitle1'] ?? '',
-          // 'productTitle2' : doc['productTitle2'] ?? '',
-          // 'productTitle3' : doc['productTitle3'] ?? '',
-          // 'productTitle4' : doc['productTitle4'] ?? '',
+          // 'productPrice' : doc['productPrice'],
+          // 'allDetails' : doc['allDetails'],
+          // 'ProductDiscount' : doc['ProductDiscount'],
+          // 'productColor' : doc['productColor'],
+          // 'productDescription' : doc['productDescription'],
+          // 'productDetail1' : doc['productDetail1'],
+          // 'productDetail2' : doc['productDetail2'],
+          // 'productDetail3' : doc['productDetail3'],
+          // 'productDetail4' : doc['productDetail4'],
+          // 'productTitle1' : doc['productTitle1'],
+          // 'productTitle2' : doc['productTitle2'],
+          // 'productTitle3' : doc['productTitle3'],
+          // 'productTitle4' : doc['productTitle4']
         });
       });
 
@@ -174,6 +226,97 @@ class _CartPageState extends State<CartPage> {
       print('Error fetching cart data: $e');
     }
   }
+
+  Future<void> addToCart(String productId) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return;
+      }
+
+      CollectionReference cartsCollection =
+      FirebaseFirestore.instance.collection('carts');
+
+      // Check if the product already exists in the cart
+      var existingItem = cartItems.firstWhere(
+            (item) => item['productId'] == productId,
+        orElse: () => <String, dynamic>{}, // Return an empty Map if no matching item is found
+      );
+
+      if (existingItem.isNotEmpty) {
+        // Product already exists, update the quantity
+        int newQuantity = existingItem['quantity'] + 1;
+        await cartsCollection.doc(existingItem['docId']).update({
+          'quantity': newQuantity,
+        });
+
+        setState(() {
+          existingItem['quantity'] = newQuantity;
+          totalPrice = calculateTotalPrice(cartItems);
+        });
+      } else {
+        // Product does not exist, add it to the cart
+        // Perform the necessary steps to add the product to the cart
+      }
+
+
+    } catch (e) {
+      print('Error adding to cart: $e');
+    }
+  }
+
+  //
+  // Future<void> addToCart(String productId) async {
+  //   try {
+  //     User? user = FirebaseAuth.instance.currentUser;
+  //     if (user == null) {
+  //       return;
+  //     }
+  //
+  //     CollectionReference cartsCollection =
+  //     FirebaseFirestore.instance.collection('carts');
+  //
+  //     // Check if the product already exists in the cart
+  //     var existingItem = cartItems.firstWhere(
+  //           (item) => item['productId'] == productId,
+  //       orElse: () => <String, dynamic>{}, // Return an empty Map if no matching item is found
+  //     );
+  //
+  //     if (existingItem.isNotEmpty) {
+  //       // Product already exists, update the quantity
+  //       int newQuantity = existingItem['quantity'] + 1;
+  //       await cartsCollection.doc(existingItem['docId']).update({
+  //         'quantity': newQuantity,
+  //       });
+  //
+  //       setState(() {
+  //         existingItem['quantity'] = newQuantity;
+  //         totalPrice = calculateTotalPrice(cartItems);
+  //       });
+  //     } else {
+  //       // Product does not exist, add it to the cart
+  //       // Perform the necessary steps to add the product to the cart
+  //       // For example:
+  //       await cartsCollection.add({
+  //         'productId': productId,
+  //         'quantity': 1,
+  //         // Add other product details as needed
+  //       });
+  //
+  //       setState(() {
+  //         cartItems.add({
+  //           'productId': productId,
+  //           'quantity': 1,
+  //           // Add other product details as needed
+  //         });
+  //         totalPrice = calculateTotalPrice(cartItems);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print('Error adding to cart: $e');
+  //   }
+  // }
+
 
   double calculateTotalPrice(List<Map<String, dynamic>> items) {
     double total = 0.0;
@@ -235,69 +378,69 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
-  void moveToOrderCollection() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        return;
-      }
-
-      CollectionReference cartsCollection =
-      FirebaseFirestore.instance.collection('carts');
-      CollectionReference ordersCollection =
-      FirebaseFirestore.instance.collection('orders');
-
-      // Get the cart items
-      QuerySnapshot querySnapshot = await cartsCollection
-          .where('uid', isEqualTo: user.uid)
-          .get();
-
-      List<Map<String, dynamic>> orderItems = [];
-      double totalOrderPrice = 0.0;
-
-      // Loop through each cart item
-      querySnapshot.docs.forEach((doc) {
-        // Extract necessary information from the cart item
-        double productNewPrice = double.parse(doc['productNewPrice']);
-        int quantity = doc['quantity']; // No need to parse, as it's already an integer
-
-// Calculate subtotal for each item
-        double subtotal = productNewPrice * quantity;
-
-        // Add subtotal to the total order price
-        totalOrderPrice += subtotal;
-
-        Map<String, dynamic> orderItem = {
-          'productName': doc['productName'],
-          'productNewPrice': productNewPrice,
-          'quantity': quantity,
-          'subtotal': subtotal,
-          // Add any other necessary fields
-        };
-
-        // Add the item to the list of order items
-        orderItems.add(orderItem);
-      });
-
-      // Create a new order document in the orders collection
-      DocumentReference newOrderRef = await ordersCollection.add({
-        'userId': user.uid,
-        'items': orderItems,
-        'totalPrice': totalOrderPrice,
-        'timestamp': Timestamp.now(), // Add timestamp for ordering
-        // Add any other necessary fields
-      });
-
-      // Clear the cart after moving the items
-      querySnapshot.docs.forEach((doc) {
-        doc.reference.delete();
-      });
-
-      print('Order placed successfully with ID: ${newOrderRef.id}');
-    } catch (e) {
-      print('Error moving items to order collection: $e');
-    }
-  }
+//   void moveToOrderCollection() async {
+//     try {
+//       User? user = FirebaseAuth.instance.currentUser;
+//       if (user == null) {
+//         return;
+//       }
+//
+//       CollectionReference cartsCollection =
+//       FirebaseFirestore.instance.collection('carts');
+//       CollectionReference ordersCollection =
+//       FirebaseFirestore.instance.collection('orders');
+//
+//       // Get the cart items
+//       QuerySnapshot querySnapshot = await cartsCollection
+//           .where('uid', isEqualTo: user.uid)
+//           .get();
+//
+//       List<Map<String, dynamic>> orderItems = [];
+//       double totalOrderPrice = 0.0;
+//
+//       // Loop through each cart item
+//       querySnapshot.docs.forEach((doc) {
+//         // Extract necessary information from the cart item
+//         double productNewPrice = double.parse(doc['productNewPrice']);
+//         int quantity = doc['quantity']; // No need to parse, as it's already an integer
+//
+// // Calculate subtotal for each item
+//         double subtotal = productNewPrice * quantity;
+//
+//         // Add subtotal to the total order price
+//         totalOrderPrice += subtotal;
+//
+//         Map<String, dynamic> orderItem = {
+//           'productName': doc['productName'],
+//           'productNewPrice': productNewPrice,
+//           'quantity': quantity,
+//           'subtotal': subtotal,
+//           // Add any other necessary fields
+//         };
+//
+//         // Add the item to the list of order items
+//         orderItems.add(orderItem);
+//       });
+//
+//       // Create a new order document in the orders collection
+//       DocumentReference newOrderRef = await ordersCollection.add({
+//         'userId': user.uid,
+//         'items': orderItems,
+//         'totalPrice': totalOrderPrice,
+//         'timestamp': Timestamp.now(), // Add timestamp for ordering
+//         // Add any other necessary fields
+//       });
+//
+//       // Clear the cart after moving the items
+//       querySnapshot.docs.forEach((doc) {
+//         doc.reference.delete();
+//       });
+//
+//       print('Order placed successfully with ID: ${newOrderRef.id}');
+//     } catch (e) {
+//       print('Error moving items to order collection: $e');
+//     }
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -343,7 +486,7 @@ class _CartPageState extends State<CartPage> {
                           item['productNewPrice'] ?? '',
                           category: item['category'] ?? '',
                           subCategory: item['subCategory'] ?? '',
-                          subtotal: item['subtotal'],
+                          // subtotal: item['subtotal'],
                         ),
                       )));
             },
@@ -406,7 +549,7 @@ class _CartPageState extends State<CartPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     // Move cart data to order collection
-                    moveToOrderCollection();
+                    // moveToOrderCollection();
                     // Navigate to BottomNavigationHome
                     Navigator.push(context, MaterialPageRoute(builder: (context) => BuyScreen()));
 
