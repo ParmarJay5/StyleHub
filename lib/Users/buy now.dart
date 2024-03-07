@@ -1,3 +1,4 @@
+
 import 'package:StyleHub/homeScreens/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,8 +24,11 @@ class _BuyScreenState extends State<BuyScreen> {
   void initState() {
     super.initState();
     fetchUserData();
-    setState(() {});
+    setState(() {
+
+    });
   }
+
 
   Future<void> fetchUserData() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
@@ -33,11 +37,8 @@ class _BuyScreenState extends State<BuyScreen> {
         _user = currentUser;
       });
 
-      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
-          .instance
-          .collection('Users')
-          .doc(currentUser.uid)
-          .get();
+      DocumentSnapshot<Map<String, dynamic>> userDoc =
+      await FirebaseFirestore.instance.collection('Users').doc(currentUser.uid).get();
       Map<String, dynamic>? userData = userDoc.data();
 
       if (userData != null) {
@@ -57,56 +58,55 @@ class _BuyScreenState extends State<BuyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment'),
+        title: Text('Payment'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
                 elevation: 4,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('User Information:'),
+                      Text('User Information:'),
                       TextFormField(
                         controller: _emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
+                        decoration: InputDecoration(labelText: 'Email'),
                       ),
                       TextFormField(
                         controller: _addressController,
-                        decoration: const InputDecoration(labelText: 'Address'),
+                        decoration: InputDecoration(labelText: 'Address'),
                       ),
                       TextFormField(
                         controller: _cityController,
-                        decoration: const InputDecoration(labelText: 'City'),
+                        decoration: InputDecoration(labelText: 'City'),
                       ),
                       TextFormField(
                         controller: _stateController,
-                        decoration: const InputDecoration(labelText: 'State'),
+                        decoration: InputDecoration(labelText: 'State'),
                       ),
                       TextFormField(
                         controller: _zipCodeController,
-                        decoration:
-                            const InputDecoration(labelText: 'Zip Code'),
+                        decoration: InputDecoration(labelText: 'Zip Code'),
                       ),
                       TextFormField(
                         controller: _phoneController,
-                        decoration: const InputDecoration(labelText: 'Phone'),
+                        decoration: InputDecoration(labelText: 'Phone'),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Card(
                 elevation: 4,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -123,13 +123,11 @@ class _BuyScreenState extends State<BuyScreen> {
                       //     }
                       //   },
                       // ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text('Select Payment Option:'),
+                      SizedBox(height: 20,),
+                      Text('Select Payment Option:'),
                       // Text("$_subtotal"),
                       ListTile(
-                        title: const Text('Cash on Delivery'),
+                        title: Text('Cash on Delivery'),
                         leading: Radio(
                           value: false,
                           groupValue: _isCreditCardSelected,
@@ -141,7 +139,7 @@ class _BuyScreenState extends State<BuyScreen> {
                         ),
                       ),
                       ListTile(
-                        title: const Text('Credit Card'),
+                        title: Text('Credit Card'),
                         leading: Radio(
                           value: true,
                           groupValue: _isCreditCardSelected,
@@ -156,11 +154,10 @@ class _BuyScreenState extends State<BuyScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 10),
-                            const Text('Credit Card Details:'),
+                            SizedBox(height: 10),
+                            Text('Credit Card Details:'),
                             TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Card Number'),
+                              decoration: InputDecoration(labelText: 'Card Number'),
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.length != 16) {
@@ -170,8 +167,7 @@ class _BuyScreenState extends State<BuyScreen> {
                               },
                             ),
                             TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Expiration Date'),
+                              decoration: InputDecoration(labelText: 'Expiration Date'),
                               keyboardType: TextInputType.datetime,
                               validator: (value) {
                                 // Implement validation for expiration date if needed
@@ -179,8 +175,7 @@ class _BuyScreenState extends State<BuyScreen> {
                               },
                             ),
                             TextFormField(
-                              decoration:
-                                  const InputDecoration(labelText: 'CVV'),
+                              decoration: InputDecoration(labelText: 'CVV'),
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.length != 3) {
@@ -195,12 +190,14 @@ class _BuyScreenState extends State<BuyScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+
+
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   pay();
                 },
-                child: const Text('Pay'),
+                child: Text('Pay'),
               ),
             ],
           ),
@@ -208,17 +205,13 @@ class _BuyScreenState extends State<BuyScreen> {
       ),
     );
   }
-
   Future<void> pay() async {
     // Implement logic to handle payment
     if (_user != null) {
       try {
         // Fetch cart document
         DocumentSnapshot<Map<String, dynamic>> cartSnapshot =
-            await FirebaseFirestore.instance
-                .collection('carts')
-                .doc(_user!.uid)
-                .get();
+        await FirebaseFirestore.instance.collection('carts').doc(_user!.uid).get();
 
         if (cartSnapshot.exists) {
           double subtotal = 0.0;
@@ -241,10 +234,7 @@ class _BuyScreenState extends State<BuyScreen> {
           });
 
           // Remove data from carts collection
-          await FirebaseFirestore.instance
-              .collection('carts')
-              .doc(_user!.uid)
-              .delete();
+          await FirebaseFirestore.instance.collection('carts').doc(_user!.uid).delete();
 
           // Add order to orders collection with product details and subtotal
           await FirebaseFirestore.instance.collection('orders').add({
@@ -263,32 +253,31 @@ class _BuyScreenState extends State<BuyScreen> {
           // Add payment details to payments collection
           await FirebaseFirestore.instance.collection('payments').add({
             'uid': _user!.uid,
-            'paymentMethod':
-                _isCreditCardSelected ? 'Credit Card' : 'Cash on Delivery',
+            'paymentMethod': _isCreditCardSelected ? 'Credit Card' : 'Cash on Delivery',
             'status': 'Paid',
             'timestamp': FieldValue.serverTimestamp(),
           });
 
           // Navigate to success page or show success message
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => BottomNavigationHome()),
-              (route) => false);
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) => BottomNavigationHome()), (route) => false);
         } else {
           // If cart document does not exist, display a message to the user
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                  'Your cart is empty. Add items before making a payment.'),
+            SnackBar(
+              content: Text('Your cart is empty. Add items before making a payment.'),
             ),
           );
 
           // Redirect the user to the shopping page or product catalog
-          // Replace with your shopping page route
+         // Replace with your shopping page route
         }
       } catch (e) {
         print('Error paying: $e');
       }
     }
   }
+
+
+
 }
