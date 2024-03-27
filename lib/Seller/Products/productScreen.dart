@@ -438,6 +438,268 @@
 //
 //
 
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:StyleHub/Seller/Products/addProductScreen.dart';
+// import 'package:StyleHub/Seller/Products/productModel.dart';
+// import 'package:StyleHub/Seller/Products/editProductScreen.dart';
+//
+// class ProductScreen extends StatefulWidget {
+//   const ProductScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   State<ProductScreen> createState() => _ProductScreenState();
+// }
+//
+// class _ProductScreenState extends State<ProductScreen> {
+//   late TextEditingController searchController;
+//   late String searchQuery;
+//   late String sellerId;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     searchController = TextEditingController();
+//     searchQuery = "";
+//     sellerId = FirebaseAuth.instance.currentUser!.uid; // Get seller's ID
+//   }
+//
+//   void _deleteProduct(String productId) {
+//     FirebaseFirestore.instance
+//         .collection('products')
+//         .doc(productId)
+//         .delete()
+//         .then((value) {
+//       print('Product deleted successfully');
+//     }).catchError((error) {
+//       print('Failed to delete product: $error');
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           "Products",
+//           style: TextStyle(fontWeight: FontWeight.bold),
+//         ),
+//         centerTitle: true,
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: (context) => const addProductScreen()));
+//               },
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: Colors.lightBlue,
+//                 shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(4)),
+//               ),
+//               child: const Text(
+//                 "Add Product",
+//                 style: TextStyle(color: Colors.white),
+//               ),
+//             ),
+//             const SizedBox(height: 10),
+//             SizedBox(
+//               width: double.infinity,
+//               height: 55,
+//               child: TextFormField(
+//                 controller: searchController,
+//                 onChanged: (value) {
+//                   setState(() {
+//                     searchQuery = value;
+//                   });
+//                 },
+//                 decoration: const InputDecoration(
+//                   border: OutlineInputBorder(
+//                     borderSide: BorderSide(color: Colors.black),
+//                   ),
+//                   focusedBorder: OutlineInputBorder(
+//                     borderSide: BorderSide(color: Colors.green),
+//                   ),
+//                   hintText: 'Search Product ...',
+//                   prefixIcon: Icon(Icons.search),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 10),
+//             Expanded(
+//               child: ProductList(
+//                 deleteProduct: _deleteProduct,
+//                 searchQuery: searchQuery,
+//                 sellerId: sellerId, // Pass seller's ID
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class ProductList extends StatelessWidget {
+//   final Function(String) deleteProduct;
+//   final String searchQuery;
+//   final String sellerId;
+//
+//   const ProductList({
+//     Key? key,
+//     required this.deleteProduct,
+//     required this.searchQuery,
+//     required this.sellerId,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<QuerySnapshot>(
+//       stream: FirebaseFirestore.instance
+//           .collection("products")
+//           .where("sellerId", isEqualTo: sellerId) // Filter products by sellerId
+//           .snapshots(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return const Center(child: CircularProgressIndicator());
+//         }
+//         final productDocs = snapshot.data!.docs;
+//         List<ProductModel> products = [];
+//
+//         for (var doc in productDocs) {
+//           final product = ProductModel.fromSnapshot(doc);
+//           products.add(product);
+//         }
+//
+//         List<ProductModel> filteredProducts = products
+//             .where((product) => product.productName
+//                 .toString()
+//                 .toLowerCase()
+//                 .contains(searchQuery.toLowerCase()))
+//             .toList();
+//
+//         return GridView.builder(
+//           shrinkWrap: true,
+//           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//             crossAxisCount: 2,
+//             childAspectRatio: 0.75,
+//             mainAxisSpacing: 20,
+//             crossAxisSpacing: 20,
+//           ),
+//           itemCount: filteredProducts.length,
+//           itemBuilder: (context, index) {
+//             final ProductModel product = filteredProducts[index];
+//             String imageUrl =
+//                 product.images!.isNotEmpty ? product.images![0] : '';
+//             return GestureDetector(
+//               onTap: () {},
+//               child: Container(
+//                 decoration: BoxDecoration(
+//                   color: Colors.white,
+//                   borderRadius: BorderRadius.circular(15),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.grey.withOpacity(0.3),
+//                       spreadRadius: 2,
+//                       blurRadius: 5,
+//                       offset: const Offset(0, 3),
+//                     ),
+//                   ],
+//                 ),
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     ClipRRect(
+//                       borderRadius:
+//                           const BorderRadius.vertical(top: Radius.circular(15)),
+//                       child: product.images!.isNotEmpty
+//                           ? Image.network(
+//                               product.images![0],
+//                               width: double.infinity,
+//                               height: 160,
+//                               // fit: BoxFit.cover,
+//                             )
+//                           : const Icon(Icons.image),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.all(10),
+//                       child: Text(
+//                         product.productName,
+//                         style: const TextStyle(
+//                             fontSize: 16, fontWeight: FontWeight.bold),
+//                         maxLines: 3,
+//                         overflow: TextOverflow.ellipsis,
+//                       ),
+//                     ),
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.end,
+//                       children: [
+//                         IconButton(
+//                           icon: const Icon(Icons.edit),
+//                           color: Colors.blueAccent,
+//                           onPressed: () {
+//                             Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                     builder: (context) => EditProductScreen(
+//                                         product: product,
+//                                         imageUrls: imageUrl,
+//                                         image: product.images!)));
+//                           },
+//                         ),
+//                         IconButton(
+//                           icon: const Icon(Icons.delete),
+//                           color: Colors.red,
+//                           onPressed: () {
+//                             showDialog(
+//                               context: context,
+//                               builder: (BuildContext context) {
+//                                 return AlertDialog(
+//                                   title: const Text("Confirm Deletion"),
+//                                   content: const Text(
+//                                       "Are you sure you want to delete this product?"),
+//                                   actions: [
+//                                     TextButton(
+//                                       onPressed: () {
+//                                         Navigator.of(context).pop();
+//                                       },
+//                                       child: const Text("Cancel"),
+//                                     ),
+//                                     TextButton(
+//                                       onPressed: () {
+//                                         deleteProduct(product.id);
+//                                         Navigator.of(context).pop();
+//                                       },
+//                                       child: const Text("Yes"),
+//                                     ),
+//                                   ],
+//                                 );
+//                               },
+//                             );
+//                           },
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             );
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
+//
+
+// last code
 import 'package:StyleHub/Seller/Products/addProductScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:StyleHub/Seller/Products/productModel.dart';
@@ -576,18 +838,18 @@ class ProductList extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         final productDocs = snapshot.data!.docs;
-        List<productModel> products = [];
+        List<ProductModel> products = [];
 
         for (var doc in productDocs) {
-          final product = productModel.fromSnapshot(doc);
+          final product = ProductModel.fromSnapshot(doc);
           products.add(product);
         }
 
-        List<productModel> filteredProducts = products
+        List<ProductModel> filteredProducts = products
             .where((product) => product.productName
-                .toString()
-                .toLowerCase()
-                .contains(searchQuery.toLowerCase()))
+            .toString()
+            .toLowerCase()
+            .contains(searchQuery.toLowerCase()))
             .toList();
 
         return GridView.builder(
@@ -600,9 +862,9 @@ class ProductList extends StatelessWidget {
           ),
           itemCount: filteredProducts.length,
           itemBuilder: (context, index) {
-            final productModel product = filteredProducts[index];
+            final ProductModel product = filteredProducts[index];
             String imageUrl =
-                product.image.isNotEmpty ? product.image[0] : '';
+            product.images!.isNotEmpty ? product.images![0] : '';
             return GestureDetector(
               onTap: () {
               },
@@ -624,14 +886,14 @@ class ProductList extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(15)),
-                      child: product.image.isNotEmpty
+                      const BorderRadius.vertical(top: Radius.circular(15)),
+                      child: product.images!.isNotEmpty
                           ? Image.network(
-                              product.image[0],
-                              width: double.infinity,
-                              height: 160,
-                              // fit: BoxFit.cover,
-                            )
+                        product.images![0],
+                        width: double.infinity,
+                        height: 160,
+                        // fit: BoxFit.cover,
+                      )
                           : const Icon(Icons.image),
                     ),
                     Padding(
@@ -657,7 +919,7 @@ class ProductList extends StatelessWidget {
                                     builder: (context) => EditProductScreen(
                                         product: product,
                                         imageUrls: imageUrl,
-                                        image: product.image)));
+                                        image: product.images!)));
                           },
                         ),
                         IconButton(

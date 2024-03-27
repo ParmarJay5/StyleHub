@@ -1,5 +1,3 @@
-import 'package:StyleHub/Seller/Products/addProductScreen.dart';
-import 'package:StyleHub/Seller/Products/productScreen.dart';
 import 'package:StyleHub/Seller/sellerProfileScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,21 +20,48 @@ class _SellerDetailScreenState extends State<SellerDetailScreen> {
   void initState() {
     super.initState();
     // Fetch the store name from Firestore when the screen initializes
-    _fetchStoreName();
+    _fetchSellerDetails();
   }
 
-  Future<void> _fetchStoreName() async {
-    // Retrieve the current user's document from Firestore
-    final userDoc = await FirebaseFirestore.instance
-        .collection('Sellers')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
+  // Future<void> _fetchStoreName() async {
+  //   // Retrieve the current user's document from Firestore
+  //   final userDoc = await FirebaseFirestore.instance
+  //       .collection('Sellers')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .get();
+  //
+  //   // Get the store name from the document
+  //   if (userDoc.exists) {
+  //     setState(() {
+  //       _storeName = userDoc['username'];
+  //     });
+  //   }
+  // }
 
-    // Get the store name from the document
-    if (userDoc.exists) {
-      setState(() {
-        _storeName = userDoc['username'];
-      });
+  Future<void> _fetchSellerDetails() async {
+    try {
+      // Retrieve the current user's document from Firestore
+      final userDoc = await FirebaseFirestore.instance
+          .collection('Sellers')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      // Get the username and contactNo from the document
+      if (userDoc.exists) {
+        setState(() {
+          _storeName = userDoc['username'];
+          _storeAddressController.text = userDoc['storeAddress'] ?? '';
+          _contactNoController.text = userDoc['contactNo'] ?? '';
+        });
+      }
+    } catch (error) {
+      print('Error fetching seller details: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to fetch seller details. Please try again.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 

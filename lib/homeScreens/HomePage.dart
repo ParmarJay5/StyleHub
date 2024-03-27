@@ -477,6 +477,8 @@
 
 
 
+import 'package:StyleHub/Search.dart';
+import 'package:StyleHub/Users/Favorite/Order/placeOrderScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -486,7 +488,6 @@ import '../Seller/Products/producrDetailScreen.dart';
 import '../category/categoryModel.dart';
 import '../page.dart';
 import '../subcategory/subCategoryModel.dart';
-import '../image.dart';
 import '../subcategory/SubCategoryScreen.dart';
 import '../Users/Favorite/favoritePage.dart';
 import '../userLogin.dart';
@@ -539,10 +540,10 @@ class _homePageState extends State<homePage> {
         .toList();
   }
 
-  Future<List<productModel>> fetchProducts() async {
+  Future<List<ProductModel>> fetchProducts() async {
     QuerySnapshot response =
     await FirebaseFirestore.instance.collection("products").get();
-    return response.docs.map((e) => productModel.fromSnapshot(e)).toList();
+    return response.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
   }
 
   @override
@@ -550,110 +551,114 @@ class _homePageState extends State<homePage> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        drawer: Drawer(
-          child:
-      //     FutureBuilder<Map<String, dynamic>>(
-      //   future: _userDataFuture,
-      //   builder: (context, snapshot) {
-      // if (snapshot.connectionState == ConnectionState.waiting) {
-      //   return CircularProgressIndicator();
-      // } else if (snapshot.hasError) {
-      //   return Text('Error: ${snapshot.error}');
-      // } else {
-      //   final userData = snapshot.data!;
-      //   final username = userData['username'];
-      //   final imageUrl = userData['profile_image'];
-      //   return
-          ListView(
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                  image: AssetImage(a),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 10),
-                child: Text(
-                  "User",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text(
-                "Home",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              onTap: () => Navigator.of(context).pop(false),
-            ),
-            const ListTile(
-              leading: Icon(Icons.add_box),
-              title: Text(
-                "My Orders",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const FavoriteScreen()));
-              },
-              leading: const Icon(Icons.favorite),
-              title: const Text(
-                "Favorite",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const UserLogin()),
-                          (route) => false);
-                }
-              },
-              title: const Text(
-                "Logout",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const ListTile(
-              leading: Icon(Icons.share),
-              title: Text(
-                "share",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const ListTile(
-              leading: Icon(Icons.rate_review),
-              title: Text(
-                "Rate Us",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+        drawer:Drawer(
+          child: FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Show loading indicator while fetching data
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData || !snapshot.data!.exists) {
+                return Text('User data not found');
+              }
+
+              var userData = snapshot.data!.data() as Map<String, dynamic>?;
+
+              if (userData == null) {
+                return Text('User data is null');
+              }
+
+              String username = userData['username'] ?? 'User'; // Use 'User' as default if username is not found
+              String imageUrl = userData['profile_image'] ?? ''; // Use empty string if image URL is not found
+
+              return ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    child: DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        image: imageUrl.isNotEmpty
+                            ? DecorationImage(
+                          image: NetworkImage(imageUrl),
+                          fit: BoxFit.cover,
+                        )
+                            : null,
+                      ),
+                      child: Text(
+                        username,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.dashboard),
+                    title: Text(
+                      "Home",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () => Navigator.of(context).pop(false),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderListScreen()));
+                    },
+                    leading: Icon(Icons.add_box),
+                    title: Text(
+                      "My Orders",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FavPage()));
+                    },
+                    leading: Icon(Icons.favorite),
+                    title: Text(
+                      "Favorite",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    onTap: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const page()),
+                            (route) => false,
+                      );
+                    },
+                    title: Text(
+                      "Logout",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.share),
+                    title: Text(
+                      "Share",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.rate_review),
+                    title: Text(
+                      "Rate Us",
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
-      // ;
-      // }
-    // }
-      // ),
-        ),
+
         appBar: AppBar(
           title: const Text(
             'StyleHub',
@@ -667,12 +672,13 @@ class _homePageState extends State<homePage> {
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: CustomSearchDelegate(),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchScreen()),
                 );
               },
             ),
+
           ],
         ),
         body: OrientationBuilder(
@@ -716,28 +722,12 @@ class _homePageState extends State<homePage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SubCategoryScreen(
-                                        selectedCategory: category,
-                                      ),
+                                      builder: (context) => BrandScreen(selectedcategory: category)
                                     ),
                                   );
                                 },
-                                child: Container(
-                                  width: orientation == Orientation.portrait ? 120 : 200,
-                                  height: 220,
-                                  margin: const EdgeInsets.only(right: 16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -825,7 +815,7 @@ class _homePageState extends State<homePage> {
                                   scrollDirection: Axis.horizontal,
                                 ),
                               ),
-                              FutureBuilder<List<productModel>>(
+                              FutureBuilder<List<ProductModel>>(
                                 future: fetchProducts(),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -845,7 +835,7 @@ class _homePageState extends State<homePage> {
                                       ),
                                     );
                                   } else {
-                                    List<productModel> products = snapshot.data!;
+                                    List<ProductModel> products = snapshot.data!;
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                                       child: Column(
@@ -873,66 +863,77 @@ class _homePageState extends State<homePage> {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => ProductDetailScreen(
-                                                         products: product,
+                                                      builder: (context) => ProductDetails(
+                                                         product: product,
                                                       ),
                                                     ),
                                                   );
                                                 },
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(16),
-                                                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                                  decoration: BoxDecoration(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                                  child: Card(
                                                     color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(12),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey.withOpacity(0.2),
-                                                        spreadRadius: 2,
-                                                        blurRadius: 5,
-                                                        offset: const Offset(0, 3),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Image.network(
-                                                        product.image[0],
-                                                        width: double.infinity,
-                                                        height: 100,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                      const SizedBox(height: 12),
-                                                      Text(
-                                                        product.productName,
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
+                                                    elevation: 4,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        ClipRRect(
+                                                          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                                                          child: Image.network(
+                                                            product.images![0],
+                                                            width: double.infinity,
+                                                            height: 170,
+                                                            // fit: BoxFit.cover,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      Text(
-                                                        '\₹ ${product.productPrice}',
-                                                        style: const TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Colors.grey,
-                                                            decoration: TextDecoration.lineThrough
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(12),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                product.productName,
+                                                                style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
+                                                                maxLines: 2,
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                              SizedBox(height: 8),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    '\₹ ${product.productPrice}',
+                                                                    style: TextStyle(
+                                                                      fontSize: 16,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.grey,
+                                                                      decoration: TextDecoration.lineThrough,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '\₹ ${product.newPrice}',
+                                                                    style: TextStyle(
+                                                                      fontSize: 18,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.green,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      Text(
-                                                        '\₹ ${product.productNewPrice}',
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.green,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
+
                                               );
                                             },
                                           ),
@@ -963,41 +964,6 @@ class _homePageState extends State<homePage> {
   }
 }
 
-class CustomSearchDelegate extends SearchDelegate<String> {
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        onPressed: () {
-          query = '';
-        },
-        icon: const Icon(Icons.clear),
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, '');
-      },
-      icon: const Icon(Icons.arrow_back),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // TODO: Implement search results
-    throw UnimplementedError();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // TODO: Implement search suggestions
-    throw UnimplementedError();
-  }
-}
 
 
 // class ProductDetailScreen extends StatelessWidget {

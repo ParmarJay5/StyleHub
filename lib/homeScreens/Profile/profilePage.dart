@@ -2,6 +2,7 @@ import 'package:StyleHub/Users/Carts/cartScreen.dart';
 import 'package:StyleHub/Users/Favorite/Order/placeOrderScreen.dart';
 import 'package:StyleHub/Users/Settings/lightanddarkmode.dart';
 import 'package:StyleHub/homeScreens/Profile/userPersonalDetails.dart';
+import 'package:StyleHub/page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:StyleHub/userLogin.dart';
@@ -51,7 +52,7 @@ class ProfilePage extends StatelessWidget {
               label: "Cart Details",
               onPressed: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => CartPage()));
+                    .push(MaterialPageRoute(builder: (context) => AddToCartScreen()));
               },
             ),
             buildProfileItem(
@@ -69,7 +70,7 @@ class ProfilePage extends StatelessWidget {
               label: "Settings",
               onPressed: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => const LDScreen()));
+                    .push(MaterialPageRoute(builder: (context) =>  SettingScreen()));
               },
             ),
             buildProfileItem(
@@ -81,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                 {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => const UserLogin(),
+                        builder: (context) => const page(),
                       ),
                       (route) => false);
                 }

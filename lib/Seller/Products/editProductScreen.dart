@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProductScreen extends StatefulWidget {
-  final productModel product;
+  final ProductModel product;
   final String imageUrls;
 
   EditProductScreen({
@@ -46,17 +46,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
     productNameController.text = widget.product.productName;
     productPriceController.text = widget.product.productPrice;
     discountController.text = widget.product.discount;
-    newPriceController.text = widget.product.productNewPrice;
-    colorController.text = widget.product.productColor;
-    title1Controller.text = widget.product.productTitle1;
-    title2Controller.text = widget.product.productTitle2;
-    title3Controller.text = widget.product.productTitle3;
-    title4Controller.text = widget.product.productTitle4;
-    detail1Controller.text = widget.product.productTitleDetail1;
-    detail2Controller.text = widget.product.productTitleDetail2;
-    detail3Controller.text = widget.product.productTitleDetail3;
-    detail4Controller.text = widget.product.productTitleDetail4;
-    allDetailsController.text = widget.product.allDetails;
+    newPriceController.text = widget.product.newPrice;
+    colorController.text = widget.product.color;
+    title1Controller.text = widget.product.title1;
+    title2Controller.text = widget.product.title2;
+    title3Controller.text = widget.product.title3;
+    title4Controller.text = widget.product.title4;
+    detail1Controller.text = widget.product.product1;
+    detail2Controller.text = widget.product.product2;
+    detail3Controller.text = widget.product.product3;
+    detail4Controller.text = widget.product.product4;
+    allDetailsController.text = widget.product.itemdetails;
     descriptionController.text = widget.product.productDescription;
   }
 
@@ -93,7 +93,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       'productDetail4': detail4Controller.text,
       'ProductDiscount': discountController.text,
       'productNewPrice': newPriceController.text,
-      'allDetails': allDetailsController.text,
+      'allProduct': allDetailsController.text,
       'image': imageUrls,
     };
 

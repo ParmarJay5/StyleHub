@@ -16,8 +16,8 @@ class BottomNavigationHome extends StatefulWidget {
 class _BottomNavigationHomeState extends State<BottomNavigationHome> {
   List<Widget> widgetsPage = [
     const homePage(),
-    const FavoriteScreen(),
-     CartPage(),
+    const FavPage(),
+     AddToCartScreen(),
     const ProfilePage(),
   ];
 

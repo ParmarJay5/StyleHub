@@ -124,7 +124,7 @@ class SellerDrawer extends StatelessWidget {
             title: const Text('Orders'),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SellerOrderScreen()),
+                MaterialPageRoute(builder: (context) => OrderListScreenSeller()),
               );
             },
           ),
